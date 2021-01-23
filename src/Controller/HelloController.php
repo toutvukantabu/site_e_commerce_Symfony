@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Twig\Environment;
+use App\Taxes\Detector;
 use App\Taxes\Calculator;
 use Cocur\Slugify\Slugify;
 use Psr\Log\LoggerInterface;
@@ -21,16 +22,16 @@ public function __construct(Calculator $calculer)
 
 
   /**
-  * @Route("/hello/{nom?world}" , name="helloName", methods={"GET", "POST"}, host = "127.0.0.1" , schemes={"http" , "https" })
+  * @Route("/hello/{prenom?world}" , name="helloName", methods={"GET", "POST"}, host = "127.0.0.1" , schemes={"http" , "https" })
   */
-    public function test($nom = "world" , LoggerInterface $logger,Slugify $slugify , Environment $twig ){
-      dump($twig);
-      dump($slugify ->slugify("Hello world"));
-      $logger->info("Mon message de log");
-      $tva = $this->calculator->calcul(100);
-      dump($tva);
+    public function test($prenom = "magali" , Environment $twig ){
 
- return new Response("Hello $nom");
+      $html = $twig->render('hello.html.twig', [
+'prenom' => $prenom,
+
+
+      ]);
+ return new Response("$html");
     }
 }
 

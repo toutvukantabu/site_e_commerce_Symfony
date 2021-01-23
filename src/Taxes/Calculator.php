@@ -1,6 +1,5 @@
 <?php 
 namespace App\Taxes;
-
 use Psr\Log\LoggerInterface;
 
 Class Calculator
@@ -21,5 +20,5 @@ Class Calculator
         return $prix * (20/100);
 
     }
-
+    
 }
