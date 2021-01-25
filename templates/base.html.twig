@@ -3,11 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+        <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+        
+        {% endblock %}
 
         {% block javascripts %}{% endblock %}
     </head>
     <body>
+ {% include "shared/_navbar.html.twig" %}
+<div class="container pt-5">
+
         {% block body %}{% endblock %}
+</div>
     </body>
 </html>

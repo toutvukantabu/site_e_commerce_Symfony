@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title 'accueil' %}
+
+{% block body %}
+
+	<h1>Nos produit phares</h1>
+
+	<div class="row">
+		{% for i in 1..3 %}
+
+
+			<div class="col">
+				<div class="card">
+					<img src="https://picsum.photos/200/200" class="img-fluid" alt="Image du produit">
+				<div class="card-body">
+					<h4 class="card-title">Superbe chaise  en bois</h4>
+					<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, placeat!</p>
+					<a href="#" class="btn btn-primary btn-sm">Détails</a>
+					<a href="#" class="btn btn-success btn-sm">Ajouter</a>
+				</div>
+				</div>
+
+			</div>
+		{% endfor %}
+	</div>
+	<hr>
+	<h2>Un service irréprochable</h2>
+	<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam, odit!</p>
+<div class="row">
+{% include "shared/_assurance.html.twig" with{
+'color': 'primary',
+'icone': 'fas fa-truck',
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
+
+{% include "shared/_assurance.html.twig" with{
+'color': 'primary',
+'icone': 'fas fa-check',
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
+
+{% include "shared/_assurance.html.twig" with{
+'color': 'warning',
+'icone': 'fas fa-lock',
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
+		</div>
+{% endblock %}
