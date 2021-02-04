@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block title 'catégorie' %}
+{% block body %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Accueil</a></li>
+  <li class="breadcrumb-item active">{{category.name}}</li>
+</ol>
+ <h1>{{category.name}}</h1>
+ <div class="row">
+ {% for product in category.products %}
+<div class="col-3">
+				<div class="card">
+					<img src="{{product.mainPicture}}" class="img-fluid" alt="Image du produit">
+				<div class="card-body">
+					<h4 class="card-title">{{product.name}} ({{product.price}} &euro;)</h4>
+					<span class="bade badge-info">{{product.category.name}}
+					</span>
+					<p class="card-text">{{product.shortDescription}}</p>
+					<a href="{{ path('product_show',{'category_slug' : product.category.slug, 
+					'slug' : product.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
+					<a href="#" class="btn btn-success btn-sm">Ajouter</a>
+				</div>
+				</div>
+
+			</div> 
+ {% endfor %}   
+ </div>
+
+{% endblock %}
