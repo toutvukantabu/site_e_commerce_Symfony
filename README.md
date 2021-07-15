@@ -7,7 +7,8 @@ run : `composer install`
 
 2.
 update .env for database connection with your username and password
-run: `php bin/console make/migration` and after `php bin/console doctrine:migrations:migrate`
+run: `php bin/console make/migration` 
+and after `php bin/console doctrine:migrations:migrate`
 if the last command not working, run `php bin/console doctrine:schema:update --force`
 
 3. 
