@@ -3,7 +3,7 @@ after cloning project
 
 1.
 run : `composer install` 
-=> If you have an error with your php version, update this on composer.json 
+=> If you have an error with your php version, update it in composer.json 
 
 2.
 update .env for database connection with your username and password
