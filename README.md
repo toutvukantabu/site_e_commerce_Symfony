@@ -11,7 +11,7 @@ composer install
 ## Step 2
 
  ```bash
- php bin/console make/migration
+ php bin/console make:migration
  ``` 
  
 and after
