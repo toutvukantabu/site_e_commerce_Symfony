@@ -1,28 +1,22 @@
 {% extends "base.html.twig" %}
 
-{% block title 'edition d\'une catégorie' %}
+{% block title 'édition de la catégorie' %}
 
 {% block body %}
 
-<h1>édition du produit {{category.name}}</h1>
-{# {{ form_start(formView) }}
+<h1>Modification de la catégorie {{category.name}}</h1>
+{{ form_start(formView) }}
 {{ form_errors(formView)}}
 <div class="row">
     <div class="col">
         {{ form_row(formView.name) }}
-        {{ form_row(formView.shortDescription) }}
-    </div>
-    <div class="col">
-    {{ form_row(formView.mainPicture) }}
-        {{ form_row(formView.price) }}
-        {{ form_row(formView.category) }}
     </div>
 </div>
 <button type="submit" class="btn btn-primary ">
     <i class="fas fa-save"></i>
-    Créer un produit
+  éditer la catégorie
 </button>
-{{ form_end(formView) }} #}
+{{ form_end(formView) }}
 
 {% endblock %}
 

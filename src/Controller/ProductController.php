@@ -75,6 +75,7 @@ class ProductController extends AbstractController
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
+        
 
         $form->handlerequest($request);
 
@@ -83,7 +84,10 @@ class ProductController extends AbstractController
             $product->setSlug(strtolower($slugger->slug($product->getName())));
             $em->persist($product);
             $em->flush();
-        }
+            return $this->redirectToRoute('product_show', [
+                'category_slug' => $product->getCategory()->getSlug(),
+                'slug' => $product->getSlug()
+            ]);   }
         $formView = $form->createView();
         return $this->render('product/create.html.twig', [
             'formView' => $formView
