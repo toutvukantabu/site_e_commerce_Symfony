@@ -1,11 +1,12 @@
 # site_e_commerce_Symfony
+
 after cloning project 
 
-1.
-run : `composer install` 
+##Step 1
+###run : ```composer install``` 
 => If you have an error with your php version, update it in composer.json 
 
-2.
+##Step 2
 update .env for database connection with your username and password
 run: `php bin/console make/migration` 
 and after `php bin/console doctrine:migrations:migrate`
