@@ -54,14 +54,13 @@ public function create( Request $request, SluggerInterface $slugger, EntityManag
     
         $category = $categoryRepository->find($id);
         $form = $this->createForm(CategoryType::class, $category);
-        $formView = $form->createView();
+        $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            // $product = $form->getData();
             $category->setSlug(strtolower($slugger->slug($category->getName())));
-            $em->persist($category);
             $em->flush();
             return $this->redirectToRoute('homepage');
         }
+        $formView = $form->createView();
         
     return $this->render('category/edit.html.twig',[
          'category'=> $category,
