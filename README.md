@@ -1,4 +1,4 @@
-# site_e_commerce_Symfony
+#  e-commerce Website
 
 after cloning project and create  _.env_ files ,run : 
 
