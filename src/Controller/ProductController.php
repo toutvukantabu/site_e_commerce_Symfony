@@ -103,11 +103,10 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         
         // $form->setData($product);
-
+        $form->handlerequest($request);
         $formView = $form->createView();
 
         if ($form->isSubmitted()) {
-            
             $em->flush();
             return $this->redirectToRoute('product_show', [
                 'category_slug' => $product->getCategory()->getSlug(),
@@ -115,9 +114,9 @@ class ProductController extends AbstractController
             ]);
         }
         $formView = $form->createView();
-        return $this->redirectToRoute('product_edit', [
+        return $this->render('product/edit.html.twig', [
             'product'=>$product,
-            'formView' => $formView,
+            'formView' => $formView
         
             
         ]);
