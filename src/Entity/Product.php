@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -19,11 +20,14 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message= "Le nom du produit est obligatoire !")
+     * @Assert\Length(min=3,max=255, minMessage="Le nom du produit doit avoir 3 caractères minimum",maxMessage="le nom du produit dépasse 255 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "le produit doit contenir un prix")
      */
     private $price;
 
@@ -39,11 +43,15 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Assert/url("mettez une url valide pour l'image")
+     * @Assert\NotBlank(message= "Le nom du produit est obligatoire !")
      */
     private $mainPicture;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message= "Le produit doit contenir une description")
+     * @Assert\Length(min=20, minMessage="la description doit faire 20 caractères minimum")
      */
     private $shortDescription;
 
@@ -57,7 +65,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -69,7 +77,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(?int $price): self
     {
         $this->price = $price;
 
@@ -105,7 +113,7 @@ class Product
         return $this->mainPicture;
     }
 
-    public function setMainPicture(string $mainPicture): self
+    public function setMainPicture(?string $mainPicture): self
     {
         $this->mainPicture = $mainPicture;
 
@@ -117,7 +125,7 @@ class Product
         return $this->shortDescription;
     }
 
-    public function setShortDescription(string $shortDescription): self
+    public function setShortDescription(?string $shortDescription): self
     {
         $this->shortDescription = $shortDescription;
 
