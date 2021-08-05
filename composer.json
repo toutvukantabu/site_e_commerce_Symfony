@@ -23,11 +23,11 @@
         "symfony/maker-bundle": "^1.28",
         "symfony/monolog-bundle": "^3.0",
         "symfony/proxy-manager-bridge": "5.1.*",
-        "symfony/security-bundle": "5.1.*",
+        "symfony/security-bundle": "5.2.*",
         "symfony/stopwatch": "5.1.*",
         "symfony/string": "5.1.*",
         "symfony/twig-bundle": "5.1.*",
-        "symfony/validator": "5.1.*",
+        "symfony/validator": "5.2.*",
         "symfony/var-dumper": "5.1.*",
         "symfony/web-profiler-bundle": "5.1.*",
         "symfony/yaml": "5.1.*",
@@ -82,7 +82,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.1.*"
+            "require": "5.2.*"
         }
     }
 }
