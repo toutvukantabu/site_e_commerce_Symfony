@@ -1,12 +1,14 @@
 #  e-commerce Website
 
-after cloning project and create  _.env_ files ,run : 
+after cloning project ,run : 
 
-``` bash
-composer install
+``` docker-compose build
 ``` 
+and next 
 
-=> If you have an error with your php version, update it in _composer.json_ 
+``` docker-compose up
+``` 
+to start local environnement
 
 ## Step 2
 
