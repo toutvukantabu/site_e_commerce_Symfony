@@ -2,11 +2,13 @@
 
 after cloning project ,run : 
 
-``` docker-compose build
+``` 
+docker-compose build
 ``` 
 and next 
 
-``` docker-compose up
+``` 
+docker-compose up
 ``` 
 to start local environnement
 
