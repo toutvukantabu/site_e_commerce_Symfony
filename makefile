@@ -59,8 +59,6 @@ php-set-8-0: ## Set php 8.0 as the current PHP version
 	$(apt-get) link --overwrite php@8.0
 
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
-symfony-cli: ##install symfony cli commands
-	wget https://get.symfony.com/cli/installer -O - | bash
 
 sf: ## List all Symfony commands
 	$(SYMFONY)
@@ -91,6 +89,9 @@ controller : ## make controller
 
 
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
+symfony-cli: ## install symfony cli commands
+	wget https://get.symfony.com/cli/installer -O - | bash
+
 cert-install: ## Install the local HTTPS certificates
 	$(SYMFONY_BIN) server:ca:install
 
@@ -118,22 +119,22 @@ restart:
 bash: ## Connect to the application container
 	$(DOCKER) container exec -it sb-app bash
 
-kill-r-containers: ##Kill all running containers 
+kill-r-containers: ## Kill all running containers 
 	$(DOCKER) kill $$(docker ps -q)
 
-delete-s-containers: ##Delete all stopped containers
+delete-s-containers: ## Delete all stopped containers
 	$(DOCKER) rm $$(docker ps -a -q)
 
-delete-images: ##Delete Delete all images
+delete-images: ## Delete Delete all images
 	$(DOCKER) rmi $$(docker images -q)
 
-stop-containers: ##stop all containers
+stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : install update symfony-cli cert-install
+build : install update symfony-cli cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
-start: docker-build up load-fixtures serve##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
+start: docker-build up load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
 reload: unserve restart load-fixtures serve ## Load fixtures 
 
@@ -150,18 +151,17 @@ load-fixtures: ## Build the DB, control the schema validity, load fixtures and c
 	$(SYMFONY) --env=dev doctrine:schema:validate
 	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
 
-rebuild-database: 
-	drop-db create-db build-db reload-data
+rebuild-database: drop-db create-db build-db load-fixtures ## Drop the database, create the database, Doctrine migration migrate,reload fixtures
 
-create-db:##Create the database
+create-db:## Create the database
 	$(SYMFONY) bin/console --env=dev doctrine:database:create --if-not-exists --no-interaction
 
 build-db:## Doctrine migration migrate
 	$(SYMFONY) bin/console --env=dev doctrine:migrations:migrate --no-interaction
 
-reload-data:##reload just fixtures
+reload-fixtures:## reload just fixtures
 	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
 
-drop-db:##Drop database
+drop-db:## Drop the  database
 	$(SYMFONY) --env=dev doctrine:database:drop --force --no-interaction
 
