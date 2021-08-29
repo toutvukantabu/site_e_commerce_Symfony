@@ -1,6 +1,6 @@
 #  e-commerce Website
 
-after cloning project  : 
+after cloning , open the terminal at the root of the project (./Site_e_commerce_Symfony) : 
 
 ``` 
 make build
@@ -10,7 +10,7 @@ and next
 ``` 
 make start
 ``` 
-If you nedd help, see "MAKEFILE" or type
+If you need help, see "MAKEFILE" or type
 
 ``` 
 make help

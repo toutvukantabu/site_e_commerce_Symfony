@@ -15,5 +15,5 @@ RUN pecl install apcu && docker-php-ext-enable apcu
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql gd opcache intl zip calendar dom mbstring zip gd xsl
 
-WORKDIR /home/bescont/Documents/dev_web/
+WORKDIR /application/
 #ENV SYMFONY_ENV="prod"

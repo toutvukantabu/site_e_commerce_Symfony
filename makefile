@@ -22,7 +22,7 @@ SYMFONY       = symfony console
 
 # Executables: local only
 SYMFONY_BIN   = symfony
-apt-get         = sudo apt-get
+apt-get       = sudo apt-get
 DOCKER        = docker
 DOCKER_COMP   = docker-compose
 
@@ -82,10 +82,10 @@ entity: ## create Entity
 	$(SYMFONY) make:entity
 
 crud : ## make crud (create reset delete)
-		$(SYMFONY) make:crud
+	$(SYMFONY) make:crud
 
 controller : ## make controller
-		$(SYMFONY) make:controller
+	$(SYMFONY) make:controller
 
 
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
