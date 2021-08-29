@@ -18,3 +18,7 @@ make help
 to see the list of commands in terminal 
 
 
+To log in to the administration panel
+
+Login: admin@gmail.com 
+password: password

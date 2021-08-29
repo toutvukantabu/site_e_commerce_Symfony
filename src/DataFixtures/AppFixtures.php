@@ -48,11 +48,13 @@ class AppFixtures extends Fixture
                 ->setPassword($hash);
             $manager->persist($user);
         }
+
+
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
             $category->setName($faker->department)
-                ->setSlug(strtolower($this->slugger->slug($category->getName())));
-
+                ->setSlug(strtolower($this->slugger->slug($category->getName())))
+                ->setOwner($user);
             $manager->persist($category);
 
             for ($p = 0; $p < mt_rand(15, 20); $p++) {
