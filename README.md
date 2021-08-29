@@ -1,6 +1,7 @@
 #  e-commerce Website
 
-after cloning , open the terminal at the root of the project (./Ss
+after cloning , open the terminal at the root of the project (./site_e_commerce_Symfony) : 
+
 ``` 
 make build
 ``` 
