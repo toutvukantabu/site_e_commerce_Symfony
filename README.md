@@ -1,6 +1,6 @@
 #  e-commerce Website
 
-after cloning , open the terminal at the root of the project (./site_e_commerce_Symfony) : 
+## after cloning , open the terminal at the root of the project (./site_e_commerce_Symfony) : 
 
 ``` 
 make build
@@ -18,15 +18,16 @@ make help
 to see the list of commands in terminal 
 
 
-To log in to the administration panel
+## To log in to the administration panel
 
 Login: admin@gmail.com 
+
 password: password
 
 
-Access to phpMyamind
+## Access to phpMyamind
 
-http://127.0.0.1:8081
+adress : http://127.0.0.1:8081
 
 login: shop
 
