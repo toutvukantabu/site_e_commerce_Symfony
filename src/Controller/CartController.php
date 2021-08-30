@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class CartController extends AbstractController
 {
@@ -32,11 +30,21 @@ class CartController extends AbstractController
                 $cart[$id] = 1;
             }
             $session->set('cart', $cart);
-    
+
+        $this->addFlash('success', "le produit a bien été ajouté au panier");
+
             return $this->redirectToRoute('product_show', [
                 'category_slug' => $product->getCategory()->getSlug(),
                 'slug' => $product->getSlug()
             ]);
         }
+    }
+
+    /**
+     * @Route("/cart", name="cart_show")
+     */
+    public function show(){
+
+        return $this->render('cart/index.html.twig');
     }
 }

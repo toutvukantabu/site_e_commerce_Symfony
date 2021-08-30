@@ -91,7 +91,7 @@ controller : ## make controller
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
 symfony-cli-linux: ## install symfony cli commands on linux
 	wget https://get.symfony.com/cli/installer -O - | bash
-	
+
 symfony-cli-mac: ## install symfony cli commands on linux
  	curl -sS https://get.symfony.com/cli/installer | bash
 
@@ -135,7 +135,7 @@ stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : docker-build up  install update symfony-cli cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
+build : docker-build up  install update symfony-cli-linux cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
 start: load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 

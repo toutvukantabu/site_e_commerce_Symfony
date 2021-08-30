@@ -8,42 +8,28 @@
 
 	<div class="row">
 		{% for p in products %}
-
-
 			<div class="col">
-				<div class="card">
-					<img src="{{p.mainPicture}}" class="img-fluid" alt="Image du produit">
-				<div class="card-body">
-					<h4 class="card-title">{{p.name}} ({{p.price}} &euro;)</h4>
-					<span class="bade badge-info">{{p.category.name}}
-					</span>
-					<p class="card-text">{{p.shortDescription}}</p>
-					<a href="{{ path('product_show',{'category_slug' : p.category.slug, 
-					'slug' : p.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
-					<a href="#" class="btn btn-success btn-sm">Ajouter</a>
-				</div>
-				</div>
-
+				{% include "product/_product_card.html.twig" %}
 			</div>
 		{% endfor %}
 	</div>
 	<hr>
 	<h2>Un service irréprochable</h2>
 	<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam, odit!</p>
-<div class="row">
-{% include "shared/_assurance.html.twig" with{
+	<div class="row">
+		{% include "shared/_assurance.html.twig" with{
 'color': 'primary',
 'icone': 'fas fa-truck',
-'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %}
 
-{% include "shared/_assurance.html.twig" with{
+		{% include "shared/_assurance.html.twig" with{
 'color': 'primary',
 'icone': 'fas fa-check',
-'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %}
 
-{% include "shared/_assurance.html.twig" with{
+		{% include "shared/_assurance.html.twig" with{
 'color': 'warning',
 'icone': 'fas fa-lock',
-'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %} 
-		</div>
+'text':' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores iusto quo placeat dolorum. Officia, aliquam!  '} %}
+	</div>
 {% endblock %}
