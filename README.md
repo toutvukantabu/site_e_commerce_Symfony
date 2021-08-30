@@ -10,6 +10,10 @@ and next
 ``` 
 make start
 ``` 
+* Access to the project : 
+
+https://127.0.0.1:8000
+
 If you need help, see "MAKEFILE" or type
 
 ``` 
