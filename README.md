@@ -1,5 +1,12 @@
 #  e-commerce Website
 
+
+## prerequisite: 
+
+-> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file. 
+
+## to start  project 
+
 * after cloning , open the terminal at the root of the project (./site_e_commerce_Symfony) : 
 
 ``` 
