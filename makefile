@@ -28,7 +28,7 @@ DOCKER_COMP   = docker-compose
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY       = install
+.PHONY       = 
 
 ## —— 🐝 The Strangebuzz Symfony Makefile 🐝 ———————————————————————————————————
 
@@ -37,7 +37,7 @@ help: ## Outputs this help screen
 
 ## —— Composer 🧙‍♂️ ————————————————————————————————————————————————————————————
 install: composer.lock ## Install vendors according to the current composer.lock file
-	$(COMPOSER) install --no-progress --prefer-dist --optimize-autoloader
+	$(DOCKER) exec  www_docker_symfony composer install --no-progress --prefer-dist --optimize-autoloader
 	
 update:##update composer
 	$(COMPOSER) update --dev --no-interaction -o
@@ -70,7 +70,7 @@ warmup: ## Warmup the cache
 	$(SYMFONY) cache:warmup
 
 fix-perms: ## Fix permissions of all var files
-	chmod -R 777 var/*
+	sudo chmod -R 777 var/* vendor/*
 
 assets: purge ## Install the assets with symlinks in the public folder
 	$(SYMFONY) assets:install public/ --symlink --relative
@@ -132,9 +132,9 @@ stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : install update symfony-cli cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
+build : docker-build up  install update symfony-cli cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
-start: docker-build up load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
+start: load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
 reload: unserve restart load-fixtures serve ## Load fixtures 
 

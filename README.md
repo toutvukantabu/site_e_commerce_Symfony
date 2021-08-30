@@ -22,3 +22,16 @@ To log in to the administration panel
 
 Login: admin@gmail.com 
 password: password
+
+
+Access to phpMyamind
+
+http://127.0.0.1:8081
+
+login: shop
+
+password: shop 
+
+Acess to maildev 
+
+127.0.0.1:8082
