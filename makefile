@@ -39,8 +39,8 @@ help: ## Outputs this help screen
 install: composer.lock ## Install vendors according to the current composer.lock file
 	$(DOCKER) exec  www_docker_symfony composer install --no-progress --prefer-dist --optimize-autoloader
 	
-update:##update composer
-	$(COMPOSER) update --dev --no-interaction -o
+update:## update composer
+	$(DOCKER) exec  www_docker_symfony composerupdate --dev --no-interaction -o
 
 ## —— PHP 🐘 (linux with sudo apt-get) —————————————————————————————————————————————————
 php-upgrade: ## Upgrade PHP to the last version
