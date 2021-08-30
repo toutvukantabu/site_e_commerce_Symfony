@@ -89,8 +89,11 @@ controller : ## make controller
 
 
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
-symfony-cli: ## install symfony cli commands
+symfony-cli-linux: ## install symfony cli commands on linux
 	wget https://get.symfony.com/cli/installer -O - | bash
+	
+symfony-cli-mac: ## install symfony cli commands on linux
+ 	curl -sS https://get.symfony.com/cli/installer | bash
 
 cert-install: ## Install the local HTTPS certificates
 	$(SYMFONY_BIN) server:ca:install
