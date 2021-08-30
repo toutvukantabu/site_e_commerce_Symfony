@@ -37,6 +37,6 @@ to see the list of commands in terminal
 
 * password: shop 
 
-## Acess to maildev 
+## Access to maildev 
 
 -> http://127.0.0.1:8082
