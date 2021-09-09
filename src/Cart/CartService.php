@@ -10,12 +10,22 @@ class CartService
 {
 
     protected $session;
+    
     protected $productRepository;
     public function __construct(SessionInterface $session, ProductRepository $productRepository)
     {
 
         $this->session = $session;
         $this->productRepository = $productRepository;
+    }
+
+    protected function getCart(): array
+    {
+        return $this->session->get('cart', []);
+    }
+    protected function saveCart(array $cart)
+    {
+        return $this->session->set('cart', $cart);
     }
 
     public function add(int  $id)
@@ -31,26 +41,25 @@ class CartService
 
     public function decrement(int  $id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
         if (!array_key_exists($id, $cart)) {
-           return;
+            return;
         }
-        if ($cart[$id] === 1){
+        if ($cart[$id] === 1) {
             $this->remove($id);
             return;
         }
         $cart[$id]--;
-        $this->session->set('cart', $cart);
+        $this->saveCart($cart);
     }
 
 
-public function remove(int $id)
-{
-    $cart = $this->session->get('cart',[]);
-    unset($cart[$id]);    
-    $this->session->set('cart', $cart);
-
-}
+    public function remove(int $id)
+    {
+        $cart = $this->session->get('cart', []);
+        unset($cart[$id]);
+        $this->session->set('cart', $cart);
+    }
 
     public function getTotal()
     {
@@ -77,5 +86,4 @@ public function remove(int $id)
         }
         return $detailedcart;
     }
-    
 }
