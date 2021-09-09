@@ -8,6 +8,6 @@
 		</span>
 		<p class="card-text">{{p.shortDescription}}</p>
 		<a href="{{ path('product_show',{'category_slug' : p.category.slug, 'slug' : p.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
-		<a href="{{path('cart_add', {'id' : p.id})}}" class="btn btn-success btn-sm">Ajouter</a>
+		<a href="{{path('cart_add', {'id' : p.id})}}?returnToHome=true" class="btn btn-success btn-sm">Ajouter</a>
 	</div>
 </div>
