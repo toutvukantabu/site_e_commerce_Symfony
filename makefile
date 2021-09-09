@@ -157,10 +157,10 @@ load-fixtures: ## Build the DB, control the schema validity, load fixtures and c
 rebuild-database: drop-db create-db build-db load-fixtures ## Drop the database, create the database, Doctrine migration migrate,reload fixtures
 
 create-db:## Create the database
-	$(SYMFONY) bin/console --env=dev doctrine:database:create --if-not-exists --no-interaction
+	$(SYMFONY)  --env=dev doctrine:database:create --if-not-exists --no-interaction
 
 build-db:## Doctrine migration migrate
-	$(SYMFONY) bin/console --env=dev doctrine:migrations:migrate --no-interaction
+	$(SYMFONY)  --env=dev doctrine:migrations:migrate --no-interaction
 
 reload-fixtures:## reload just fixtures
 	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction

@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Purchase;
 use WW\Faker\Provider\Picture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -37,16 +38,18 @@ class AppFixtures extends Fixture
             ->setEmail("admin@gmail.com")
             ->setPassword($hash)
             ->setRoles(['ROLE_ADMIN']);
-        $manager->persist($admin);
-
-
-        for ($u = 0; $u < 5; $u++) {
-            $user = new User();
-            $hash = $this->encoder->encodePassword($user, "password");
-            $user->setFullName($faker->name())
+            $manager->persist($admin);
+            
+            $users= [];
+            for ($u = 0; $u < 5; $u++) {
+                
+                $user = new User();
+                $hash = $this->encoder->encodePassword($user, "password");
+                $user->setFullName($faker->name())
                 ->setEmail("user$u@gmail.com")
                 ->setPassword($hash);
-            $manager->persist($user);
+                $users[]= $user;
+                $manager->persist($user);
         }
 
 
@@ -54,7 +57,7 @@ class AppFixtures extends Fixture
             $category = new Category;
             $category->setName($faker->department)
                 ->setSlug(strtolower($this->slugger->slug($category->getName())))
-                ->setOwner($user);
+                ->setOwner($faker->randomElement($users));
             $manager->persist($category);
 
             for ($p = 0; $p < mt_rand(15, 20); $p++) {
@@ -69,6 +72,21 @@ class AppFixtures extends Fixture
 
                 $manager->persist($product);
             }
+        }
+        for ($p=0; $p< mt_rand(20,40); $p++) { 
+           $purchase = new Purchase;
+           $purchase->setFullname($faker->name)
+           -> setAdress($faker->streetAddress)
+           ->setPostalCode($faker->postcode())
+           ->setCity($faker->city())
+           ->setUser($faker->randomElement($users))
+           ->setTotal(mt_rand(2000, 30000))
+           ;
+
+           if ($faker->boolean(90)) {
+            $purchase->setStatus(Purchase::STATUS_PAID);
+        }
+           $manager->persist($purchase);
         }
         $manager->flush();
     }
