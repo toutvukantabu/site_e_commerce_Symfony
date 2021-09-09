@@ -70,7 +70,7 @@ warmup: ## Warmup the cache
 	$(SYMFONY) cache:warmup
 
 fix-perms: ## Fix permissions of all var files
-	sudo chmod -R 777 var/* vendor/*
+	sudo chmod 777 ./var ./vendor ./php
 
 assets: purge ## Install the assets with symlinks in the public folder
 	$(SYMFONY) assets:install public/ --symlink --relative
