@@ -23,7 +23,7 @@ make build
 ``` 
 make start
 ``` 
-## Access to the project : 
+## Project access : 
 
 -> https://127.0.0.1:8000
 
@@ -35,15 +35,15 @@ make help
 to see the list of commands in terminal 
 
 
-## To log in to the administration panel
+## Administration panel access
 
 * Login: admin@gmail.com 
 
 * password: password
 
 
-## Access to phpMyamind
-
+## PhpMyamind access
+ 
 ->  http://127.0.0.1:8081
 
 * login: shop
