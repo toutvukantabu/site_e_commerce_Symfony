@@ -11,7 +11,7 @@
 
 . Install symfony-cli  -> https://symfony.com/download
 
-## to start  project 
+## Project start  
 
 * after cloning , open the terminal at the root of the project (~/site_e_commerce_Symfony) : 
 
@@ -50,6 +50,6 @@ to see the list of commands in terminal
 
 * password: shop 
 
-## Access to maildev 
+## Maildev access
 
 -> http://127.0.0.1:8082
