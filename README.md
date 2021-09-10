@@ -3,7 +3,13 @@
 
 ## prerequisite: 
 
--> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file and symfony-cli  
+-> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file 
+
+. Install docker -> https://docs.docker.com/get-docker/
+
+. Install docker-compose -> https://docs.docker.com/compose/install/
+
+. Install symfony-cli  -> https://symfony.com/download
 
 ## to start  project 
 
