@@ -3,7 +3,7 @@
 
 ## prerequisite: 
 
--> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file. 
+-> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file and symfony-cli  
 
 ## to start  project 
 
