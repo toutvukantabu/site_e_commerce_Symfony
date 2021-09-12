@@ -46,7 +46,7 @@ services:
     ports:
       - "8741:80"
     volumes:
-      - ./php/vhosts:/etc/apache2/sites-enabled
+      - .docker/php/vhosts:/etc/apache2/sites-enabled
       - ./:/var/www
     restart: always
     networks:

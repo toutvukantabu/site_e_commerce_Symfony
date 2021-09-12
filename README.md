@@ -9,8 +9,6 @@
 
 . Install docker-compose -> https://docs.docker.com/compose/install/
 
-. Install symfony-cli  -> https://symfony.com/download
-
 ## Project start  
 
 * after cloning , open the terminal at the root of the project (~/site_e_commerce_Symfony) : 
@@ -21,11 +19,11 @@ make build
 * and next 
 
 ``` 
-make start
+make start 
 ``` 
 ## Project access : 
 
--> https://127.0.0.1:8000
+-> http://localhost:8741
 
 If you need help, see "MAKEFILE" or type
 
@@ -44,7 +42,7 @@ to see the list of commands in terminal
 
 ## PhpMyamind access
  
-->  http://127.0.0.1:8081
+->  http://localhost:8081
 
 * login: shop
 
@@ -52,4 +50,4 @@ to see the list of commands in terminal
 
 ## Maildev access
 
--> http://127.0.0.1:8082
+-> http://localhost:8082
