@@ -19,7 +19,7 @@ make build
 * and next 
 
 ``` 
-make start to load fixtures
+make start 
 ``` 
 ## Project access : 
 
