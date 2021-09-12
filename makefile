@@ -2,7 +2,7 @@
 SHELL         = bash
 PROJECT       = E_commerce_Symfony
 GIT_AUTHOR    = Gwendal Bescont
-HTTP_PORT     = 8000
+HTTP_PORT     = 8741
 
 # Executables
 EXEC_PHP      = php
@@ -10,8 +10,7 @@ COMPOSER      = composer
 GIT           = git
 
 # Alias
-SYMFONY       = symfony console
-# if you use Docker you can replace "with: docker-composer exec my_php_container $(EXEC_PHP) bin/console"
+SYMFONY       = docker exec www_docker_symfony $(EXEC_PHP) bin/console
 # if you use php you can replace "with: $(EXEC_PHP) bin/console"
 
 # Executables: vendors
@@ -21,7 +20,7 @@ SYMFONY       = symfony console
 # CODESNIFFER   = ./vendor/squizlabs/php_codesniffer/bin/phpcs
 
 # Executables: local only
-SYMFONY_BIN   = symfony
+SYMFONY_BIN   = symfony 
 apt-get       = sudo apt-get
 DOCKER        = docker
 DOCKER_COMP   = docker-compose
@@ -36,7 +35,7 @@ help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 ## —— Composer 🧙‍♂️ ————————————————————————————————————————————————————————————
-install: composer.lock ## Install vendors according to the current composer.lock file
+install: ## Install vendors according to the current composer.lock file
 	$(DOCKER) exec  www_docker_symfony composer install --no-progress --prefer-dist --optimize-autoloader
 	
 update:## update composer
@@ -58,7 +57,7 @@ php-set-8-0: ## Set php 8.0 as the current PHP version
 	$(apt-get) unlink php
 	$(apt-get) link --overwrite php@8.0
 
-## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
+## —— Symfony or php 🎵 ———————————————————————————————————————————————————————————————
 
 sf: ## List all Symfony commands
 	$(SYMFONY)
@@ -89,11 +88,12 @@ controller : ## make controller
 
 
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
+
 symfony-cli-linux: ## install symfony cli commands on linux
-	wget https://get.symfony.com/cli/installer -O - | bash
+	wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 symfony-cli-mac: ## install symfony cli commands on linux
- 	curl -sS https://get.symfony.com/cli/installer | bash
+ 	curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 cert-install: ## Install the local HTTPS certificates
 	$(SYMFONY_BIN) server:ca:install
@@ -113,7 +113,8 @@ docker-build: ## Builds the PHP image
 
 down: ## Stop the docker hub
 	$(DOCKER_COMP) down --remove-orphans
-destroy:
+
+destroy:## destroy  docker containers
 	$(DOCKER_COMP) rm -v --force --stop || true
 
 restart:
@@ -135,13 +136,13 @@ stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : docker-build up  install update symfony-cli-linux cert-install ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
+build : docker-build up  install update  ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
 start: load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
 reload: unserve restart load-fixtures serve ## Load fixtures 
 
-stop: down unserve ## Stop docker and the Symfony binary server
+stop: down  ## Stop docker and the Symfony binary server
 
 commands: ## Display all commands in the project namespace
 	$(SYMFONY) list $(PROJECT)
