@@ -138,7 +138,7 @@ stop-containers: ## Stop all containers
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
 build : docker-build up  install update  ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
-start: load-fixtures serve ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
+start: load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
 reload: unserve restart load-fixtures serve ## Load fixtures 
 
