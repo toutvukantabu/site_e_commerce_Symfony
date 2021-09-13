@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\Purchase;
+use DateTime;
 use WW\Faker\Provider\Picture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -38,20 +39,21 @@ class AppFixtures extends Fixture
             ->setEmail("admin@gmail.com")
             ->setPassword($hash)
             ->setRoles(['ROLE_ADMIN']);
-            $manager->persist($admin);
-            
-            $users= [];
-            for ($u = 0; $u < 5; $u++) {
-                
-                $user = new User();
-                $hash = $this->encoder->encodePassword($user, "password");
-                $user->setFullName($faker->name())
+        $manager->persist($admin);
+
+        $users = [];
+        for ($u = 0; $u < 5; $u++) {
+
+            $user = new User();
+            $hash = $this->encoder->encodePassword($user, "password");
+            $user->setFullName($faker->name())
                 ->setEmail("user$u@gmail.com")
                 ->setPassword($hash);
-                $users[]= $user;
-                $manager->persist($user);
+            $users[] = $user;
+            $manager->persist($user);
         }
 
+        $products = [];
 
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
@@ -59,7 +61,6 @@ class AppFixtures extends Fixture
                 ->setSlug(strtolower($this->slugger->slug($category->getName())))
                 ->setOwner($faker->randomElement($users));
             $manager->persist($category);
-
             for ($p = 0; $p < mt_rand(15, 20); $p++) {
 
                 $product = new Product;
@@ -69,24 +70,30 @@ class AppFixtures extends Fixture
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
                     ->setMainPicture($faker->pictureUrl(250, 200));
-
+                $products[] = $product;
                 $manager->persist($product);
             }
         }
-        for ($p=0; $p< mt_rand(20,40); $p++) { 
-           $purchase = new Purchase;
-           $purchase->setFullname($faker->name)
-           -> setAdress($faker->streetAddress)
-           ->setPostalCode($faker->postcode())
-           ->setCity($faker->city())
-           ->setUser($faker->randomElement($users))
-           ->setTotal(mt_rand(2000, 30000))
-           ;
+        for ($p = 0; $p < mt_rand(20, 40); $p++) {
 
-           if ($faker->boolean(90)) {
-            $purchase->setStatus(Purchase::STATUS_PAID);
-        }
-           $manager->persist($purchase);
+            $purchase = new Purchase;
+            $purchase->setFullname($faker->name)
+                ->setAdress($faker->streetAddress)
+                ->setPostalCode($faker->postcode())
+                ->setCity($faker->city())
+                ->setUser($faker->randomElement($users))
+                ->setTotal(mt_rand(2000, 30000))
+                ->setPurchasedAt($faker->dateTimeBetween('- 6 months'));
+
+            $selectedProducts = $faker->randomElements($products, mt_rand(3, 5));
+
+            foreach ($selectedProducts as $product) {
+                $purchase->addProduct($product);
+            }
+            if ($faker->boolean(90)) {
+                $purchase->setStatus(Purchase::STATUS_PAID);
+            }
+            $manager->persist($purchase);
         }
         $manager->flush();
     }
