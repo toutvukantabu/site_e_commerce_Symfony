@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 class PurchasesListController extends AbstractController
@@ -32,16 +33,13 @@ class PurchasesListController extends AbstractController
     public function index()
     {
         /** @var User */
-        $user = $this->getUser();
+        $user = $this->security->getUser();
 
         if (!$user) {
-            $url = $this->routeur->generate('homepage');
-            dump($url);
-
-            return new RedirectResponse($url);
+         throw new AccessDeniedException("vous devez être connecté pour acceder à vos commandes ");
         }
 
-        $html = $this->twig->render('Purchase/index.html.twig', [
+        $html = $this->twig->render('purchase/index.html.twig', [
             'purchases' => $user->getPurchases()
         ]);
         return new Response($html);

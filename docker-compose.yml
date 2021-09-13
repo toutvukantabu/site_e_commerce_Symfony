@@ -13,8 +13,6 @@ services:
       MYSQL_DATABASE: symf_shop
       MYSQL_USER: shop
       MYSQL_PASSWORD: shop
-      healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
     networks:
       - dev
 
@@ -49,11 +47,14 @@ services:
       - .docker/php/vhosts:/etc/apache2/sites-enabled
       - ./:/var/www
     restart: always
+    depends_on:
+      - maildev
+      - db
     networks:
       - dev
 
 networks:
-  dev:
+  dev: 
 
 volumes:
   db-data:

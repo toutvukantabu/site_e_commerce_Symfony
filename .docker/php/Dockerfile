@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4.3-apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 RUN apt-get update \
@@ -10,6 +10,9 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
    mv composer.phar /usr/local/bin/composer
+
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN docker-php-ext-configure intl

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\Purchase;
+use DateTime;
 use WW\Faker\Provider\Picture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -74,6 +75,7 @@ class AppFixtures extends Fixture
             }
         }
         for ($p=0; $p< mt_rand(20,40); $p++) { 
+           
            $purchase = new Purchase;
            $purchase->setFullname($faker->name)
            -> setAdress($faker->streetAddress)
@@ -81,6 +83,7 @@ class AppFixtures extends Fixture
            ->setCity($faker->city())
            ->setUser($faker->randomElement($users))
            ->setTotal(mt_rand(2000, 30000))
+           ->setPurchasedAt($faker->dateTimeBetween('- 6 months') )
            ;
 
            if ($faker->boolean(90)) {
