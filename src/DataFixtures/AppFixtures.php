@@ -2,17 +2,19 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\Purchase;
-use DateTime;
+use App\Entity\PurchaseItem;
+use App\Entity\PurshaseItem;
 use WW\Faker\Provider\Picture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 
@@ -88,7 +90,16 @@ class AppFixtures extends Fixture
             $selectedProducts = $faker->randomElements($products, mt_rand(3, 5));
 
             foreach ($selectedProducts as $product) {
-                $purchase->addProduct($product);
+                $purchaseItem = new PurchaseItem;
+                $purchaseItem->setProduct($product)
+                ->setQuantity(mt_rand(1,4))
+                ->setProductName($product->getName())
+                ->setProductPrice($product->getPrice())
+                ->setTotal(
+                    $purchaseItem->getProductPrice() * $purchaseItem->getQuantity()
+                )
+                ->setPurchase($purchase);
+                $manager->persist($purchaseItem);
             }
             if ($faker->boolean(90)) {
                 $purchase->setStatus(Purchase::STATUS_PAID);
