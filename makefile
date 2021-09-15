@@ -11,7 +11,8 @@ GIT           = git
 
 # Alias
 #SYMFONY       = docker exec www_docker_symfony $(EXEC_PHP) bin/console
-SYMFONY 	  = docker exec www_docker_symfony $(SYMFONY_BIN) console
+SYMFONY 	  = $(SYMFONY_BIN) console
+PHP			  = $(EXEC_PHP) bin/console
 # if you use php you can replace "with: $(EXEC_PHP) bin/console"
 
 # Executables: vendors
@@ -70,7 +71,7 @@ warmup: ## Warmup the cache
 	$(SYMFONY) cache:warmup
 
 fix-perms: ## Fix permissions of all var files
-	sudo chmod 777 ./var ./vendor ./php
+	sudo chmod 777 ./var ./vendor ./php ./
 
 assets: purge ## Install the assets with symlinks in the public folder
 	$(SYMFONY) assets:install public/ --symlink --relative
@@ -79,21 +80,21 @@ purge: ## Purge cache and logs
 	rm -rf var/cache/* var/logs/*
 
 entity: ## create Entity (before using this command, connect on your container with make:bash)
-	symfony console make:entity
+	$(SYMFONY) make:entity
 
 migration: ## make migration (before using this command, connect on your container with make:bash)
-	symfony console make:migration
+	$(SYMFONY) make:migration --no-interaction
 
 migrate: ## doctrine migration migrate (before using this command, connect on your container with make:bash)
-	symfony console doctrine:migration:migrate
+	$(SYMFONY) doctrine:migration:migrate --no-interaction
 
 migrate-force: ## doctrine migration migrate (before using this command, connect on your container with make:bash)
-	symfony console doctrine:schema:update --force
+	$(SYMFONY) doctrine:schema:update --force
 
-crud : ## make crud (create reset delete)
+crud : ## make crud (create reset delete)(before using this command, connect on your container with make:bash)
 	$(SYMFONY) make:crud 
 
-controller : ## make controller
+controller : ## make controller (before using this command, connect on your container with make:bash)
 	$(SYMFONY) make:controller
 
 
@@ -146,7 +147,7 @@ stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : docker-build up  install update  ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
+build : docker-build up  install update bash   ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
 
 start: load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
@@ -165,7 +166,7 @@ load-fixtures: ## Build the DB, control the schema validity, load fixtures and c
 	$(SYMFONY) --env=dev doctrine:schema:validate
 	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
 
-rebuild-database: drop-db create-db build-db load-fixtures ## Drop the database, create the database, Doctrine migration migrate,reload fixtures
+rebuild-database: drop-db create-db migration migrate-force load-fixtures ## Drop database, create database, Doctrine migration migrate,reload fixtures
 
 create-db:## Create the database
 	$(SYMFONY)  --env=dev doctrine:database:create --if-not-exists --no-interaction
@@ -174,5 +175,5 @@ reload-fixtures:## reload just fixtures
 	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
 
 drop-db:## Drop the  database (before using this command, connect on your container with make:bash)
-	$(SYMFONY) --env=dev doctrine:database:drop --force --no-interaction
+	$(SYMFONY)  doctrine:database:drop --force --no-interaction
 
