@@ -5,7 +5,7 @@
 
 {% block body %}
 
-	{% if items | length > 0 %}
+{% if items | length > 0 %}
 		<table class="table">
 			<thead>
 				<tr>
@@ -55,4 +55,22 @@
 		<td colspan="3">total</td>
 		<td colspan="2">{{total}}</td>
 	</tr>
-</tfoot></table>{% else %}<h2>Votre panier est vide</h2>{% endif %}{% endblock %}
+</tfoot>
+</table>
+<hr>
+{% if app.user %}
+<h2>Confirmez votre commande e remplissant ce formulaire</h2>
+{{ form_start(confirmationForm, {'action':  path('purchase_confirm')})}}
+{{ form_widget(confirmationForm) }}
+<button type="submit" class="btn btn-success">
+Je confirme</button>
+{{ form_end(confirmationForm) }}
+{% else %}
+	<h2>Vous devez être connecté pour confirmer cette commande</h2>
+	<a href=" {{path('security_login')}}" class ="btn btn-success">conexion</a>
+	ou <a href="#">Créez un compte</a>
+{% endif %}
+{% else %}
+<h2>Votre panier est vide</h2>
+{% endif %}
+{% endblock %}

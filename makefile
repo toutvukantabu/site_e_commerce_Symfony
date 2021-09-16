@@ -95,9 +95,10 @@ crud : ## make crud (create reset delete)(before using this command, connect on 
 	$(SYMFONY) make:crud 
 
 controller : ## make controller (before using this command, connect on your container with make:bash)
-	$(SYMFONY) make:controller
+	$(SYMFONY) make:controller 
 
-
+router : ## debugging App routing
+	$(SYMFONY) debug:router
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
 
 symfony-cli-linux: ## install symfony cli commands on linux
