@@ -34,8 +34,9 @@ class ProductController extends AbstractController
 
         ]);
     }
+
     /**
-     * @Route("/{category_slug}/{slug}", name="product_show")
+     * @Route("/{category_slug}/{slug}", name="product_show" , priority=-1)
      */
     public function show($slug, ProductRepository $productRepository)
     {
@@ -58,11 +59,11 @@ class ProductController extends AbstractController
     /** 
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create( Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
-        
+
 
         $form->handlerequest($request);
 
@@ -74,22 +75,24 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('product_show', [
                 'category_slug' => $product->getCategory()->getSlug(),
                 'slug' => $product->getSlug()
-            ]);   }
+            ]);
+        }
         $formView = $form->createView();
         return $this->render('product/create.html.twig', [
             'formView' => $formView
         ]);
     }
+
     /** 
      * @Route("/admin/product/{id}/edit", name="product_edit")
      */
-    public function edit($id, ProductRepository $productRepository,Request $request, EntityManagerInterface $em)
+    public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em)
     {
-       
+
         $product = $productRepository->find($id);
 
         $form = $this->createForm(ProductType::class, $product);
-        
+
         // $form->setData($product);
         $form->handlerequest($request);
         $formView = $form->createView();
@@ -103,7 +106,7 @@ class ProductController extends AbstractController
         }
         $formView = $form->createView();
         return $this->render('product/edit.html.twig', [
-            'product'=>$product,
+            'product' => $product,
             'formView' => $formView
         ]);
     }
