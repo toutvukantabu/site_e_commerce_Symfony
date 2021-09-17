@@ -38,3 +38,8 @@ services:
             $seuil: 100
     
     Cocur\Slugify\Slugify : ~
+
+    App\Stripe\StripeService:
+        arguments:
+            $publicKey: '%env(STRIPE_PUBLIC_KEY)%'
+            $secretKey: '%env(STRIPE_SECRET_KEY)%'

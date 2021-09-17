@@ -147,8 +147,13 @@ delete-images: ## Delete Delete all images
 stop-containers: ## Stop all containers
 	docker stop `docker ps -q`
 
+## —— Stripe 💻 ————————————————————————————————————————————————————————
+
+stripe : ## install stripe
+	$(DOCKER) exec  www_docker_symfony composer require stripe/stripe-php
+
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-build : docker-build up  install update bash   ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Install the local HTTPS certificates
+build : docker-build up  install update stripe   ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Stripe
 
 start: load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
