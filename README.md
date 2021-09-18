@@ -9,18 +9,32 @@
 
 . Install docker-compose -> https://docs.docker.com/compose/install/
 
+If you want test stripe payments, add on .env files your API keys access
+
+ -> https://dashboard.stripe.com/test/apikeys
+
 ## Project start  
 
 * after cloning , open the terminal at the root of the project (~/site_e_commerce_Symfony) : 
 
+First :
+
 ``` 
 make build
 ``` 
-* and next 
+
+Second open command on www_symfony_docker container (tap "exit" if you want return on basic terminal): 
+
+``` 
+make bash
+``` 
+
+Third load fixtures:
 
 ``` 
 make start 
 ``` 
+
 ## Project access : 
 
 -> http://localhost:8741
