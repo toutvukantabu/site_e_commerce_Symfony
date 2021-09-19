@@ -9,7 +9,7 @@
 
 . Install docker-compose -> https://docs.docker.com/compose/install/
 
-If you want test stripe payments, add on .env files your API keys access
+If you want testing stripe payments, add on .env files your API keys access
 
  -> https://dashboard.stripe.com/test/apikeys
 
