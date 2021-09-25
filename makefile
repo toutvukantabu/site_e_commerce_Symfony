@@ -99,6 +99,9 @@ controller : ## make controller (before using this command, connect on your cont
 
 router : ## debugging App routing
 	$(SYMFONY) debug:router
+
+dispatcher : ## see dispatcher event
+	$(SYMFONY) debug:event-dispatcher
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
 
 symfony-cli-linux: ## install symfony cli commands on linux

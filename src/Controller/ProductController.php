@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Event\ProductViewEvent;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
@@ -38,7 +40,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{category_slug}/{slug}", name="product_show" , priority=-1)
      */
-    public function show($slug, ProductRepository $productRepository)
+    public function show($slug,ProductRepository $productRepository,EventDispatcherInterface $dispatcher)
     {
         $product = $productRepository->findOneBy([
 
@@ -47,12 +49,11 @@ class ProductController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException("Le produit demandé n'existe pas");
         }
-
+        $event= new ProductViewEvent($product);
+        $dispatcher->dispatch( $event,'ProductView.Succes');
         return $this->render('product/show.html.twig', [
 
             'product' => $product,
-
-
         ]);
     }
 
@@ -63,7 +64,6 @@ class ProductController extends AbstractController
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
-
 
         $form->handlerequest($request);
 
@@ -88,7 +88,6 @@ class ProductController extends AbstractController
      */
     public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em)
     {
-
         $product = $productRepository->find($id);
 
         $form = $this->createForm(ProductType::class, $product);
