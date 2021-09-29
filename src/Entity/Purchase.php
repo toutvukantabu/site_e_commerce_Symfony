@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\PurchaseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=PurchaseRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Purchase
 {
@@ -49,7 +50,7 @@ class Purchase
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status ='PENDING';
+    private $status = 'PENDING';
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="purchases")
@@ -63,15 +64,39 @@ class Purchase
 
     /**
      * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="purchase", orphanRemoval=true)
+     * @var Collection<PurchaseItem>
      */
     private $purchaseItems;
 
 
-    
+
     public function __construct()
     {
         $this->purchaseItems = new ArrayCollection();
     }
+
+    /**
+     * @ORM\prePersist 
+     */
+    public function prePersist()
+    {
+        if (empty($this->purchasedAt)) {
+            $this->purchasedAt = new DateTime();
+        }
+    }
+    /**
+     * @ORM\preFlush
+     */
+    public function preFlush()
+    {
+        $total = 0;
+        foreach ($this->purchaseItems as $item) {
+            $total += $item->getTotal();
+        }
+        $this->$total = $total;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -202,7 +227,4 @@ class Purchase
 
         return $this;
     }
-
-    
-   
 }
