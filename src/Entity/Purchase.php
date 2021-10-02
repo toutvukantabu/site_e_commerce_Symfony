@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\PurchaseItem;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 
 
@@ -92,10 +93,12 @@ class Purchase
     public function preFlush()
     {
         $total = 0;
+
         foreach ($this->purchaseItems as $item) {
             $total += $item->getTotal();
         }
-        $this->$total = $total;
+          $this->total = $total;
+         
     }
     
     public function getId(): ?int
