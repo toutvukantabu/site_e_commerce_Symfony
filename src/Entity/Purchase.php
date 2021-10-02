@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\PurchaseItem;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * @ORM\Entity(repositoryClass=PurchaseRepository::class)
@@ -76,7 +78,7 @@ class Purchase
     }
 
     /**
-     * @ORM\prePersist 
+     * @ORM\PrePersist 
      */
     public function prePersist()
     {
@@ -85,7 +87,7 @@ class Purchase
         }
     }
     /**
-     * @ORM\preFlush
+     * @ORM\PreFlush
      */
     public function preFlush()
     {
@@ -95,8 +97,7 @@ class Purchase
         }
         $this->$total = $total;
     }
-
-
+    
     public function getId(): ?int
     {
         return $this->id;

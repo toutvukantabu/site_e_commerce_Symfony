@@ -2,24 +2,24 @@
 
 namespace App\Doctrine\Listener;
 
-use App\Entity\Product;
+use App\Entity\Category;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class ProductSlugListener{
-
-    protected $slugger;
+class CategorySlugListener{
     
+    protected $slugger;
+
     public function __construct(SluggerInterface $slugger)
     {
         $this->slugger = $slugger;
     }
 
-    public function prePersist(Product $entity,LifecycleEventArgs $event)
+    public function prePersist(Category $entity,LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
      
-        if(!$entity instanceof Product){
+        if(!$entity instanceof Category){
             return;
         }
         if(empty($entity->getSlug())){
