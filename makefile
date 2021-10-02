@@ -59,7 +59,7 @@ php-set-8-0: ## Set php 8.0 as the current PHP version
 	$(apt-get) unlink php
 	$(apt-get) link --overwrite php@8.0
 
-## —— Symfony or php 🎵 ———————————————————————————————————————————————————————————————
+## —— Symfony environnement🎵 ———————————————————————————————————————————————————————————————
 
 sf: ## List all Symfony commands
 	$(SYMFONY)
@@ -102,6 +102,11 @@ router : ## debugging App routing
 
 dispatcher : ## see dispatcher event
 	$(SYMFONY) debug:event-dispatcher
+	
+framework : ## see framework config
+	$(SYMFONY) debug:config framework 
+
+
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
 
 symfony-cli-linux: ## install symfony cli commands on linux

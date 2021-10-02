@@ -50,7 +50,8 @@ class ProductController extends AbstractController
             throw $this->createNotFoundException("Le produit demandé n'existe pas");
         }
         $event= new ProductViewEvent($product);
-        $dispatcher->dispatch( $event,'ProductView.Succes');
+
+        $dispatcher->dispatch( $event,'productView.Success');
         return $this->render('product/show.html.twig', [
 
             'product' => $product,
