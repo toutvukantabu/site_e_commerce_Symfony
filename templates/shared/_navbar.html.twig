@@ -25,7 +25,7 @@
 	<li class="nav-item">
 		<a href="{{ path('cart_show') }}" class="nav-link">
 		<i class="fas fa-shopping-cart"> articles {{ cartService.detailCartItem|length }}</i>
-		Total :({{ cartService.total }})
+		Total :({{ cartService.total | amount }})
 	
 		</a>
 	</li>
