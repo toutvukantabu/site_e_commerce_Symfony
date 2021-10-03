@@ -32,18 +32,18 @@ class PurchaseSuccessEmailSubscriber implements EventSubscriberInterface
 
     public function sendSuccessEmail(PurchaseSuccessEvent $purchaseSuccessEvent)
     {
-        // $purchaseSuccessEvent->getPurchase()->getUser();
-        // $purchase = $purchaseSuccessEvent->getPurchase();
-        // $email = new TemplatedEmail();
-        // $email->to(new Address($purchaseSuccessEvent->getPurchase()->getUser()->getEmail()),$purchaseSuccessEvent->getPurchase()->getUser()->getFullName())
-        // ->from("contact@mail.com")
-        // ->subject("Bravo,votre commande n°({$purchase->getId()}) à bien été confirmée")
-        // ->htmlTemplate('emails/purchase_success.html.twig')
-        // ->context([
-        //     'purchase' => $purchase,
-        //     'user'=> $purchaseSuccessEvent->getPurchase()->getUser()
-        // ]);
-        // $this->mailer->send($email);
-        // $this->logger->info("Email envoyé pour la commande n°" . $purchaseSuccessEvent->getPurchase()->getId());
+        $purchaseSuccessEvent->getPurchase()->getUser();
+        $purchase = $purchaseSuccessEvent->getPurchase();
+        $email = new TemplatedEmail();
+        $email->to(new Address($purchaseSuccessEvent->getPurchase()->getUser()->getEmail(),$purchaseSuccessEvent->getPurchase()->getUser()->getFullName()))
+        ->from("contact@mail.com")
+        ->subject("Bravo,votre commande n°({$purchase->getId()}) à bien été confirmée")
+        ->htmlTemplate('emails/purchase_success.html.twig')
+        ->context([
+            'purchase' => $purchase,
+            'user'=> $purchaseSuccessEvent->getPurchase()->getUser()
+        ]);
+        $this->mailer->send($email);
+        $this->logger->info("Email envoyé pour la commande n°" . $purchaseSuccessEvent->getPurchase()->getId());
     }
 }
