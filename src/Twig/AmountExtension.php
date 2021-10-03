@@ -13,13 +13,13 @@ public function getFilters(){
     ];
 }
 
-public function amount($value){
+public function amount($value, string $symbol = '€', string $descep = ',', string $thousandsep = ' ' ){
 
  $finaleValue = $value / 100 ;
 
- $finaleValue = number_format($finaleValue, 2, ',', '' );
+ $finaleValue = number_format($finaleValue, 2, $descep, $thousandsep );
 
- return $finaleValue . '€';
+ return $finaleValue .''. $symbol;
 }
     
 }
