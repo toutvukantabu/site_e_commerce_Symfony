@@ -16,6 +16,7 @@
         "mbezhanov/faker-provider-collection": "^2.0",
         "sensio/framework-extra-bundle": "^5.6",
         "stripe/stripe-php": "^7.97",
+        "symfony/apache-pack": "^1.0",
         "symfony/console": "5.2.*",
         "symfony/debug-bundle": "5.1.*",
         "symfony/dotenv": "5.1.*",
