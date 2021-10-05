@@ -29,6 +29,11 @@
 	
 		</a>
 	</li>
+	{% if is_granted ('ROLE_ADMIN') %}
+		<li class="nav-item">
+			<a href="{{ path('admin')}}" class="nav-link">administration</a>
+		</li>
+	{% endif %}
 	{% if app.user %}
 		<li class="nav-item">
 			<a href="{{ path('purchase_index')}}" class="nav-link">mes commandes</a>

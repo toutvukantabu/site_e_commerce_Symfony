@@ -18,7 +18,9 @@
 	</h1>
 	<div class="row">
 		<div class="col-4">
-			<img src="{{product.mainPicture}}" class="img-fluid" alt="Image de {{product.name}}">
+		<pre>
+		</pre>
+			<img src="{{asset('/uploads')}}{{(product.mainPicture)}}" class="img-fluid" alt="Image de {{product.name}}">
 		</div>
 		<div class="col">
 			<span class="badge badge-primary">{{product.category.name}}

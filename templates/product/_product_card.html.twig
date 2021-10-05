@@ -1,5 +1,5 @@
 <div class="card">
-	<img src="{{p.mainPicture}}" class="img-fluid" alt="Image du produit">
+	<img src="{{asset('/uploads')}}{{p.mainPicture}}" class="img-fluid" alt="Image du produit">
 	<div class="card-body">
 		<h4 class="card-title">{{p.name}}
 			({{p.price | amount }})</h4>

@@ -8,21 +8,27 @@ use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\Purchase;
 use App\Entity\PurchaseItem;
+use App\Service\FileUploader;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Flex\Path;
 
 class AppFixtures extends Fixture
 
 {
     protected $slugger;
     protected $encoder;
+   
 
     public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $encoder)
     {
         $this->slugger = $slugger;
         $this->encoder = $encoder;
+    
     }
     public function load(ObjectManager $manager)
     {
@@ -53,7 +59,6 @@ class AppFixtures extends Fixture
         }
 
         $products = [];
-
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
             $category->setName($faker->department)
@@ -66,7 +71,7 @@ class AppFixtures extends Fixture
                     ->setPrice($faker->price(4000, 20000))
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
-                    ->setMainPicture($faker->pictureUrl(250, 200));
+                    ->setMainPicture('/product/test.png');
                 $products[] = $product;
                 $manager->persist($product);
             }

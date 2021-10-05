@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Service\FileUploader;
 use App\Form\ProductType;
 use App\Event\ProductViewEvent;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{category_slug}/{slug}", name="product_show" , priority=-1)
      */
-    public function show($slug,ProductRepository $productRepository,EventDispatcherInterface $dispatcher)
+    public function show($slug, ProductRepository $productRepository, EventDispatcherInterface $dispatcher)
     {
         $product = $productRepository->findOneBy([
 
@@ -49,9 +51,9 @@ class ProductController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException("Le produit demandé n'existe pas");
         }
-        $event= new ProductViewEvent($product);
+        $event = new ProductViewEvent($product);
 
-        $dispatcher->dispatch( $event,'productView.Success');
+        $dispatcher->dispatch($event, 'productView.Success');
         return $this->render('product/show.html.twig', [
 
             'product' => $product,
@@ -61,7 +63,7 @@ class ProductController extends AbstractController
     /** 
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, FileUploader $fileUploader)
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
@@ -69,8 +71,15 @@ class ProductController extends AbstractController
         $form->handlerequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $product = $form->getData();
+            
             $product->setSlug(strtolower($slugger->slug($product->getName())));
+            $productFile = $form->get('mainPicture')->getData();
+            
+            if ($productFile) {
+                $fileUploader->setEntityTargetUploads(get_class($product));
+                $productMainPicture = $fileUploader->upload($productFile);
+                $product->setMainPicture($productMainPicture);  
+            }
             $em->persist($product);
             $em->flush();
             return $this->redirectToRoute('product_show', [
