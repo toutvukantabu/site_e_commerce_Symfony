@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Category;
+use App\Entity\Purchase;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(fields={"email"}, message="Il y a deja un compte avec cet email")
  */
 class User implements UserInterface
 {
@@ -62,8 +67,10 @@ class User implements UserInterface
         return $this->id;
     }
 
+
     public function getEmail(): ?string
     {
+
         return $this->email;
     }
 
@@ -79,6 +86,7 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
+
     public function getUsername(): string
     {
         return (string) $this->email;

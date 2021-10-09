@@ -56,6 +56,14 @@ services:
                     entity: App\Entity\Category,
                 },
             ]
+    App\EventDispatcher\RegistrationEmailVerifierSubscriber:
+        tags:
+            [
+                {
+                    name: 'doctrine.event_subscriber'
+                 
+                },
+            ]
     App\Service\FileUploader:
         arguments:
             $targetDirectory: "%product_image_directory%"
