@@ -20,13 +20,13 @@ If you want testing stripe payments, add on .env files your API keys access
 First :
 
 ``` 
-make build
+make start
 ``` 
 
 Second open command on www_symfony_docker container (tap "exit" if you want return on basic terminal): 
 
 ``` 
-make bash
+make sh
 ``` 
 
 Third load fixtures:
@@ -37,7 +37,7 @@ make start
 
 ## Project access : 
 
--> http://localhost:8741
+-> https://localhost:444
 
 If you need help, see "MAKEFILE" or type
 
@@ -52,15 +52,6 @@ to see the list of commands in terminal
 * Login: admin@gmail.com 
 
 * password: password
-
-
-## PhpMyamind access
- 
-->  http://localhost:8081
-
-* login: shop
-
-* password: shop 
 
 ## Maildev access
 
