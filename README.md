@@ -27,13 +27,7 @@ Second open command on www_symfony_docker container (tap "exit" if you want retu
 
 ``` 
 make sh
-``` 
-
-Third load fixtures:
-
-``` 
-make start 
-``` 
+```
 
 ## Project access : 
 
