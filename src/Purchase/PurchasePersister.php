@@ -10,17 +10,13 @@ use Symfony\Component\Security\Core\Security;
 
 class PurchasePersister
 {
-    /**
-     * @var \App\Cart\CartService
-     */
-    public $cartService;
 
 
-    public function __construct(protected \Symfony\Bundle\SecurityBundle\Security  $security, protected \App\Cart\CartService $cartservice, protected \Doctrine\ORM\EntityManagerInterface $em)
+    public function __construct(protected \Symfony\Bundle\SecurityBundle\Security  $security, protected CartService $cartService, protected \Doctrine\ORM\EntityManagerInterface $em)
     {
     }
 
-    public function storePurchase(Purchase $purchase)
+    public function storePurchase(Purchase $purchase): void
     {
         $purchase->setUser($this->security->getUser());
 
@@ -36,7 +32,7 @@ class PurchasePersister
                 ->setTotal($cartItem->getTotal());
                 $purchase->addPurchaseItem($purchaseItem);
             $this->em->persist($purchaseItem);
-    
+
         }
 
         $this->em->flush();
