@@ -6,49 +6,35 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: 'string')]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $fullName;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="owner")
-     */
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Category::class)]
     private $categories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'user')]
     private $purchases;
 
     public function __construct()
@@ -140,15 +126,9 @@ class User implements UserInterface
 
     public function getFullName(): ?string
     {
-        return $this->fullName;
+        return 'test';
     }
 
-    public function setFullName(string $fullName): self
-    {
-        $this->fullName = $fullName;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Category[]
@@ -170,11 +150,9 @@ class User implements UserInterface
 
     public function removeCategory(Category $category): self
     {
-        if ($this->categories->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getOwner() === $this) {
-                $category->setOwner(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->categories->removeElement($category) && $category->getOwner() === $this) {
+            $category->setOwner(null);
         }
 
         return $this;
@@ -200,13 +178,16 @@ class User implements UserInterface
 
     public function removePurchase(Purchase $purchase): self
     {
-        if ($this->purchases->removeElement($purchase)) {
-            // set the owning side to null (unless already changed)
-            if ($purchase->getUser() === $this) {
-                $purchase->setUser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->purchases->removeElement($purchase) && $purchase->getUser() === $this) {
+            $purchase->setUser(null);
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

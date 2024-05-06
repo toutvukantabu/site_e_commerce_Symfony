@@ -42,7 +42,7 @@ class ProductType extends AbstractType
                 ],
                 'divisor'=> 100,
                 'required' => false
-            
+
             ])
             ->add('mainPicture', UrlType::class, [
                 'label' => 'image du produit',
@@ -57,9 +57,7 @@ class ProductType extends AbstractType
                 ],
                 'placeholder' => '--choisir une categorie--',
                 'class' => Category::class,
-                'choice_label' => function (Category $category) {
-                    return strtoupper($category->getName());
-                }
+                'choice_label' => fn(Category $category) => strtoupper((string) $category->getName())
             ]);
 
          /* Second test */
@@ -88,7 +86,7 @@ class ProductType extends AbstractType
         //        $product->setPrice($product->getPrice()/100);
         //    }
         /* if ($product->getId() === null){
-                   
+
                 $form->add('category', EntityType::class, [
                     'label' => 'catégorie',
                     'attr' => [

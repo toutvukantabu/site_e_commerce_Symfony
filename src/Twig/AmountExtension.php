@@ -9,7 +9,7 @@ class AmountExtension extends AbstractExtension {
 public function getFilters(){
 
     return[
-        new TwigFilter('amount', [$this, 'amount'])
+        new TwigFilter('amount', $this->amount(...))
     ];
 }
 

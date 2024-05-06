@@ -8,11 +8,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductSlugListener{
 
-    protected $slugger;
-    
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(protected \Symfony\Component\String\Slugger\SluggerInterface $slugger)
     {
-        $this->slugger = $slugger;
     }
 
     public function prePersist(Product $entity,LifecycleEventArgs $event)
@@ -22,7 +19,7 @@ class ProductSlugListener{
         if(!$entity instanceof Product){
             return;
         }
-        if(empty($entity->getSlug())){
+        if($entity->getSlug() === null || $entity->getSlug() === '' || $entity->getSlug() === '0'){
 
             $entity->setSlug(strtolower($this->slugger->slug($entity->getName())));
 

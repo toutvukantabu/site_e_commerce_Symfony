@@ -16,11 +16,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class PurchasePaymentSuccessController extends AbstractController
 {
 
-    /**
-     * @Route("/purchase/terminate/{id}", name="purchase_payment_success")
-     * @IsGranted("ROLE_USER")
-     */
-    public function success($id, PurchaseRepository $purchaseRepository, EntityManagerInterface $em, CartService $cartService, EventDispatcherInterface $dispatcher)
+    #[\Symfony\Component\Security\Http\Attribute\IsGranted('ROLE_USER')]
+    #[Route(path: '/purchase/terminate/{id}', name: 'purchase_payment_success')]
+    public function success($id, PurchaseRepository $purchaseRepository, EntityManagerInterface $em, CartService $cartService, EventDispatcherInterface $dispatcher): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $purchase = $purchaseRepository->find($id);
         if (!$purchase || $purchase && $purchase->getUser() !== $this->getUser() || $purchase && $purchase->getStatus() === Purchase::STATUS_PAID) {

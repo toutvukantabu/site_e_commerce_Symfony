@@ -17,17 +17,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryController extends AbstractController
 {
     // protected $categoryRepository;
-
     // public function renderMenuList(){
     //   $categories = $this->categoryRepository->findAll();
     //  return $this->render('caytegory/_menu.html.twig', [
     //      'category'=> $categories
     //  ]);
-    // }  
-
-    /**
-     * @Route("/category", name="category")
-     */
+    // }
+    #[Route(path: '/category', name: 'category')]
     public function index(): Response
     {
         return $this->render('category/index.html.twig', [
@@ -35,9 +31,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    /**
-     *@route("/admin/category/create" , name="category_create")
-     */
+    #[route(path: '/admin/category/create', name: 'category_create')]
     public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
     {
         $category = new Category;
@@ -56,9 +50,7 @@ class CategoryController extends AbstractController
             'formView' => $formView
         ]);
     }
-    /**
-     *@route("/admin/category/{id}/edit" , name="category_edit")
-     */
+    #[route(path: '/admin/category/{id}/edit', name: 'category_edit')]
     public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em, SluggerInterface $slugger)
     { 
         

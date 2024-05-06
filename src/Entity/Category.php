@@ -8,39 +8,28 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table( name: '`category`')]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message= "Le nom de la catégorie est obligatoire !")
-     * @Assert\Length(min=0,max=255, minMessage="Le nom de la catégorie doit avoir 3 caractères minimum",maxMessage="le nom de la catégorie dépasse 255 caractères")
-     * 
-     */
+    
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Le nom de la catégorie est obligatoire !')]
+    #[Assert\Length(min: 0, max: 255, minMessage: 'Le nom de la catégorie doit avoir 3 caractères minimum', maxMessage: 'le nom de la catégorie dépasse 255 caractères')]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
-     */
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
     private $products;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
     private $owner;
 
     public function __construct()
@@ -97,11 +86,9 @@ class Category
 
     public function removeProduct(Product $product): self
     {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->products->removeElement($product) && $product->getCategory() === $this) {
+            $product->setCategory(null);
         }
 
         return $this;

@@ -12,7 +12,7 @@ class CategoryVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['CAN_EDIT'])
+        return $attribute === 'CAN_EDIT'
             && $subject instanceof \App\Entity\Category;
     }
 
@@ -24,10 +24,8 @@ class CategoryVoter extends Voter
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case 'CAN_EDIT':
-             return $subject->getOwner() === $user;
+        if ($attribute === 'CAN_EDIT') {
+            return $subject->getOwner() === $user;
         }
 
         return false;

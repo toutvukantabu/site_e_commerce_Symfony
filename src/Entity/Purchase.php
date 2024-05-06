@@ -2,73 +2,53 @@
 
 namespace App\Entity;
 
+use App\Repository\PurchaseRepository;
 use DateTime;
-use App\Entity\PurchaseItem;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 
 
-/**
- * @ORM\Entity(repositoryClass=PurchaseRepository::class)
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity(repositoryClass: PurchaseRepository::class)]
+#[ORM\Table(name: '`order`')]
+#[ORM\HasLifecycleCallbacks]
 class Purchase
 {
     public const STATUS_PENDING = 'PENDING';
     public const STATUS_PAID = 'PAID';
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $fullname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $adress;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $postalCode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $city;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $total;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $status = 'PENDING';
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="purchases")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $purchasedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="purchase", orphanRemoval=true)
      * @var Collection<PurchaseItem>
      */
+    #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseItem::class, orphanRemoval: true)]
     private $purchaseItems;
 
 
@@ -78,18 +58,14 @@ class Purchase
         $this->purchaseItems = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PrePersist 
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (empty($this->purchasedAt)) {
             $this->purchasedAt = new DateTime();
         }
     }
-    /**
-     * @ORM\PreFlush
-     */
+    #[ORM\PreFlush]
     public function preFlush()
     {
         $total = 0;
@@ -222,11 +198,9 @@ class Purchase
 
     public function removePurchaseItem(PurchaseItem $purchaseItem): self
     {
-        if ($this->purchaseItems->removeElement($purchaseItem)) {
-            // set the owning side to null (unless already changed)
-            if ($purchaseItem->getPurchase() === $this) {
-                $purchaseItem->setPurchase(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->purchaseItems->removeElement($purchaseItem) && $purchaseItem->getPurchase() === $this) {
+            $purchaseItem->setPurchase(null);
         }
 
         return $this;

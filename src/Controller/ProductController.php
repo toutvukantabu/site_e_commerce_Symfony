@@ -17,9 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
-    /**
-     * @Route("/{slug}", name="product_category", priority=-1)
-     */
+    #[Route(path: '/{slug}', name: 'product_category', priority: -1)]
     public function category($slug, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneBy([
@@ -37,10 +35,8 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{category_slug}/{slug}", name="product_show" , priority=-1)
-     */
-    public function show($slug,ProductRepository $productRepository,EventDispatcherInterface $dispatcher)
+    #[Route(path: '/{category_slug}/{slug}', name: 'product_show', priority: -1)]
+    public function show($slug,ProductRepository $productRepository,EventDispatcherInterface $dispatcher): \Symfony\Component\HttpFoundation\Response
     {
         $product = $productRepository->findOneBy([
 
@@ -58,9 +54,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /** 
-     * @Route("/admin/product/create", name="product_create")
-     */
+    #[Route(path: '/admin/product/create', name: 'product_create')]
     public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
     {
         $product = new Product;
@@ -84,9 +78,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /** 
-     * @Route("/admin/product/{id}/edit", name="product_edit")
-     */
+    #[Route(path: '/admin/product/{id}/edit', name: 'product_edit')]
     public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em)
     {
         $product = $productRepository->find($id);

@@ -10,11 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class PurchasesListController extends AbstractController
 {
 
-    /**
-     * @Route("/purchases", name="purchase_index")
-     * @IsGranted("ROLE_USER", message="vous devez être connecté pour acceder à vos commandes")
-     */
-    public function index()
+    #[\Symfony\Component\Security\Http\Attribute\IsGranted('ROLE_USER', message: 'vous devez être connecté pour acceder à vos commandes')]
+    #[Route(path: '/purchases', name: 'purchase_index')]
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
         /** @var User */
         $user = $this->getUser();

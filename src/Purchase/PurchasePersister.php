@@ -10,16 +10,14 @@ use Symfony\Component\Security\Core\Security;
 
 class PurchasePersister
 {
-    protected $security;
-    protected $cartservice;
-    protected $em;
+    /**
+     * @var \App\Cart\CartService
+     */
+    public $cartService;
 
 
-    public function __construct(Security  $security, CartService $cartService, EntityManagerInterface $em)
+    public function __construct(protected \Symfony\Bundle\SecurityBundle\Security  $security, protected \App\Cart\CartService $cartservice, protected \Doctrine\ORM\EntityManagerInterface $em)
     {
-        $this->security = $security;
-        $this->cartService = $cartService;
-        $this->em = $em;
     }
 
     public function storePurchase(Purchase $purchase)
