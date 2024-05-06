@@ -20,7 +20,6 @@ SYMFONY  = $(PHP_CONT) bin/console
 .DEFAULT_GOAL = help
 .PHONY       =
 
-
 #---PHPQA---#
 PHPQA = jakzal/phpqa:php8.2
 PHPQA_RUN = $(DOCKER_RUN) --init --rm -v $(PWD):/project -w /project $(PHPQA)
@@ -174,7 +173,7 @@ destroy:## destroy  docker containers
 restart:
 	$(DOCKER_COMP) restart $$(docker  -l -c )
 
-bash: ## Connect to the application container
+sh: ## Connect to the application container
 	$(DOCKER) exec -it  site_e_commerce_symfony-php-1  bash
 
 kill-r-containers: ## Kill all running containers
@@ -197,9 +196,9 @@ stripe : ## install stripe
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
 build : docker-build up  install update stripe   ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Stripe
 
-start: up load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
+start: build load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
-reload: stop restart load-fixturesdr	 ## Load fixtures
+reload: stop restart load-fixtures	 ## Load fixtures
 
 stop: down  ## Stop docker and the Symfony binary server
 
