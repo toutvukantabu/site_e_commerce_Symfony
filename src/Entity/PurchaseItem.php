@@ -2,49 +2,35 @@
 
 namespace App\Entity;
 
+use App\Repository\PurchaseItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PurchaseItemRepository::class)
- */
+#[ORM\Entity(repositoryClass: PurchaseItemRepository::class)]
+#[ORM\Table(name: '`purchase_item`')]
 class PurchaseItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="purchaseItems")
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'purchaseItems')]
     private $product;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Purchase::class, inversedBy="purchaseItems")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Purchase::class, inversedBy: 'purchaseItems')]
+    #[ORM\JoinColumn(nullable: false)]
     private $purchase;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $productName;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $productPrice;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $quantity;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $total;
 
     public function getId(): ?int

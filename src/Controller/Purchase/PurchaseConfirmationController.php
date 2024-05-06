@@ -18,22 +18,13 @@ class PurchaseConfirmationController extends AbstractController
 {
 
 
-    protected $cartService;
-    protected $em;
-    protected $persister;
-
-    public function __construct(CartService $cartService, EntityManagerInterface $em, PurchasePersister $persister)
+    public function __construct(protected \App\Cart\CartService $cartService, protected \Doctrine\ORM\EntityManagerInterface $em, protected \App\Purchase\PurchasePersister $persister)
     {
-        $this->cartService = $cartService;
-        $this->em = $em;
-        $this->persister = $persister;
     }
 
-    /**
-     * @Route("/purchase/confirm", name="purchase_confirm")
-     * @IsGranted("ROLE_USER", message ="Vous devez être connecté pour effectuer une commande")
-     */
-    public function confirm(Request $request)
+    #[\Symfony\Component\Security\Http\Attribute\IsGranted('ROLE_USER', message: 'Vous devez être connecté pour effectuer une commande')]
+    #[Route(path: '/purchase/confirm', name: 'purchase_confirm')]
+    public function confirm(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $form = $this->createForm(CartConfirmationType::class);
 
@@ -43,11 +34,11 @@ class PurchaseConfirmationController extends AbstractController
             return $this->redirectToRoute('cart_show');
         }
 
-        $user = $this->getUser();
+        $this->getUser();
 
         $cartItems = $this->cartService->getDetailCartItem();
 
-        if (count($cartItems) === 0) {
+        if ($cartItems === []) {
 
             $this->addFlash('warning', 'Vous ne pouvez pas valider une commande avec un panier vide');
 

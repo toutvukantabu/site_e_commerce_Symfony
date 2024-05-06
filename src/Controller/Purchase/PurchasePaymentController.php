@@ -12,10 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PurchasePaymentController extends AbstractController
 {
 
-    /**
-     * @Route("/purchase/pay/{id}", name="purchase_payement_form")
-     * @IsGranted("ROLE_USER")
-     */
+    #[\Symfony\Component\Security\Http\Attribute\IsGranted('ROLE_USER')]
+    #[Route(path: '/purchase/pay/{id}', name: 'purchase_payement_form')]
     public function showCardForm($id, PurchaseRepository $purchaseRepository, StripeService $stripeService)
     {
         $purchase = $purchaseRepository->find($id);

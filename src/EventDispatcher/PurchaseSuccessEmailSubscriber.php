@@ -13,13 +13,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PurchaseSuccessEmailSubscriber implements EventSubscriberInterface
 {
-    protected $logger;
-    protected $mailer;
-
-    public function __construct(LoggerInterface $logger, MailerInterface $mailer)
+    public function __construct(protected \Psr\Log\LoggerInterface $logger, protected \Symfony\Component\Mailer\MailerInterface $mailer)
     {
-        $this->logger = $logger;
-        $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
@@ -30,7 +25,7 @@ class PurchaseSuccessEmailSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function sendSuccessEmail(PurchaseSuccessEvent $purchaseSuccessEvent)
+    public function sendSuccessEmail(PurchaseSuccessEvent $purchaseSuccessEvent): void
     {
         $purchaseSuccessEvent->getPurchase()->getUser();
         $purchase = $purchaseSuccessEvent->getPurchase();

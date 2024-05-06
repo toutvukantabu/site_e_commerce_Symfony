@@ -8,11 +8,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PurchaseSuccessEvent extends Event
 {
-    private  $purchase;
-
-    public function __construct(Purchase $purchase)
+    public function __construct(private readonly \App\Entity\Purchase $purchase)
     {
-        $this->purchase = $purchase;
     }
 
 

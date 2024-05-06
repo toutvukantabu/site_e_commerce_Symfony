@@ -14,24 +14,12 @@ use Symfony\Component\HttpFoundation\Request;;
 class CartController extends AbstractController
 {
 
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-    /**
-     * @var CartService
-     */
-    protected $cartservice;
 
-    public function __construct(ProductRepository $productRepository, CartService $cartService)
+    public function __construct(protected \App\Repository\ProductRepository $productRepository, protected CartService $cartService)
     {
-        $this->productRepository = $productRepository;
-        $this->cartService = $cartService;
     }
-    /**
-     * @Route("/cart/add/{id}", name="cart_add", requirements={"id":"\d+"})
-     */
-    public function add($id, Request $request)
+    #[Route(path: '/cart/add/{id}', name: 'cart_add', requirements: ['id' => '\d+'])]
+    public function add(int $id, Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
     {
 
         $product = $this->productRepository->find($id);
@@ -54,10 +42,8 @@ class CartController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/cart", name="cart_show")
-     */
-    public function show()
+    #[Route(path: '/cart', name: 'cart_show')]
+    public function show(): \Symfony\Component\HttpFoundation\Response
     {
         $form = $this->createForm(CartConfirmationType::class);
         $detailedcart = $this->cartService->getDetailCartItem();
@@ -65,15 +51,13 @@ class CartController extends AbstractController
         return $this->render('cart/index.html.twig', [
             'total' => $total,
             'items' => $detailedcart,
-            'confirmationForm'=>$form->createView()
+            'confirmationForm'=>$form
 
         ]);
     }
 
-    /**
-     * @Route("/cart/deletet/{id}", name="cart_delete", requirements = {"id" = "\d+"})
-     */
-    public function delete($id)
+    #[Route(path: '/cart/deletet/{id}', name: 'cart_delete', requirements: ['id' => '\d+'])]
+    public function delete(int $id): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $product = $this->productRepository->find($id);
         if (!$product) {
@@ -86,10 +70,8 @@ class CartController extends AbstractController
         return $this->redirectToRoute("cart_show");
     }
 
-    /**
-     * @Route("/cart/decrements/{id}", name="cart_decrement", requirements={"id":"\d+"})
-     */
-    public function decrement($id)
+    #[Route(path: '/cart/decrements/{id}', name: 'cart_decrement', requirements: ['id' => '\d+'])]
+    public function decrement(int $id): \Symfony\Component\HttpFoundation\RedirectResponse
     {
 
         $product = $this->productRepository->find($id);

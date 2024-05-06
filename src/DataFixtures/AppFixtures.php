@@ -10,21 +10,17 @@ use App\Entity\Purchase;
 use App\Entity\PurchaseItem;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 
 {
-    protected $slugger;
-    protected $encoder;
 
-    public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $encoder)
+
+    public function __construct(protected \Symfony\Component\String\Slugger\SluggerInterface $slugger, protected UserPasswordHasherInterface $passwordHasher)
     {
-        $this->slugger = $slugger;
-        $this->encoder = $encoder;
     }
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
 
         $faker = Factory::create('fr_FR');
@@ -33,8 +29,8 @@ class AppFixtures extends Fixture
         $faker->addProvider(new \WW\Faker\Provider\Picture($faker));
 
         $admin = new User;
-        $hash = $this->encoder->encodePassword($admin, "password");
-        $admin->setFullName($faker->name())
+        $hash = $this->passwordHasher->hashPassword($admin, 'password');
+        $admin
             ->setEmail("admin@gmail.com")
             ->setPassword($hash)
             ->setRoles(['ROLE_ADMIN']);
@@ -44,8 +40,7 @@ class AppFixtures extends Fixture
         for ($u = 0; $u < 5; $u++) {
 
             $user = new User();
-            $hash = $this->encoder->encodePassword($user, "password");
-            $user->setFullName($faker->name())
+            $user
                 ->setEmail("user$u@gmail.com")
                 ->setPassword($hash);
             $users[] = $user;
@@ -56,17 +51,17 @@ class AppFixtures extends Fixture
 
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
-            $category->setName($faker->department)
+            $category->setName($faker->safeColorName())
                 ->setOwner($faker->randomElement($users));
             $manager->persist($category);
             for ($p = 0; $p < mt_rand(15, 20); $p++) {
 
                 $product = new Product;
-                $product->setName($faker->productName)
-                    ->setPrice($faker->price(4000, 20000))
+                $product->setName($faker->colorName())
+                    ->setPrice($faker->numberBetween(2,3000))
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
-                    ->setMainPicture($faker->pictureUrl(250, 200));
+                    ->setMainPicture($faker->imageUrl());
                 $products[] = $product;
                 $manager->persist($product);
             }

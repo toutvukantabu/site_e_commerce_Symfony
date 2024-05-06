@@ -7,7 +7,13 @@ use App\Entity\Product;
 class CartItem
 {
 
+    /**
+     * @var \App\Entity\Product
+     */
     public $product;
+    /**
+     * @var int
+     */
     public $qty;
 
     public function __construct(Product $product, int $qty)

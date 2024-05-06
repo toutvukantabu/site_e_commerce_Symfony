@@ -4,32 +4,84 @@ PROJECT       = E_commerce_Symfony
 GIT_AUTHOR    = Gwendal Bescont
 HTTP_PORT     = 8741
 
+# Executables (local)
+DOCKER = docker
+DOCKER_RUN = $(DOCKER) run
+DOCKER_COMP = docker compose
+
+# Docker containers
+PHP_CONT = $(DOCKER_COMP) exec php
+
 # Executables
-EXEC_PHP      = php
-COMPOSER      = composer
-GIT           = git
-
-# Alias
-#SYMFONY       = docker exec www_docker_symfony $(EXEC_PHP) bin/console
-SYMFONY 	  = $(SYMFONY_BIN) console
-PHP			  = $(EXEC_PHP) bin/console
-# if you use php you can replace "with: $(EXEC_PHP) bin/console"
-
-# Executables: vendors
-# PHPUNIT       = ./vendor/bin/phpunit
-# PHPSTAN       = ./vendor/bin/phpstan
-# PHP_CS_FIXER  = ./vendor/bin/php-cs-fixer
-# CODESNIFFER   = ./vendor/squizlabs/php_codesniffer/bin/phpcs
-
-# Executables: local only
-SYMFONY_BIN   = symfony 
-apt-get       = sudo apt-get
-DOCKER        = docker
-DOCKER_COMP   = docker-compose
+COMPOSER = $(PHP_CONT) composer
+SYMFONY  = $(PHP_CONT) bin/console
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY       = 
+.PHONY       =
+
+
+#---PHPQA---#
+PHPQA = jakzal/phpqa:php8.2
+PHPQA_RUN = $(DOCKER_RUN) --init --rm -v $(PWD):/project -w /project $(PHPQA)
+
+## === 🐛  PHPQA =================================================
+qa-cs-fixer-dry-run: ## Run php-cs-fixer in dry-run mode.
+	$(PHPQA_RUN) php-cs-fixer fix ./src --rules=@Symfony --verbose --dry-run
+.PHONY: qa-cs-fixer-dry-run
+
+qa-cs-fixer: ## Run php-cs-fixer.
+	$(PHPQA_RUN) php-cs-fixer fix --ansi ./src --rules=@Symfony --verbose
+.PHONY: qa-cs-fixer
+
+qa-phpstan: ## Run phpstan.
+	$(PHPQA_RUN) phpstan analyse --ansi ./src --level=3
+.PHONY: qa-phpstan
+
+qa-security-checker: ## Run security-checker.
+	$(SYMFONY) security:check --ansi --no-interaction
+.PHONY: qa-security-checker
+
+qa-phpcpd: ## Run phpcpd (copy/paste detector).
+	$(PHPQA_RUN) phpcpd ./src
+.PHONY: qa-phpcpd
+
+qa-php-metrics: ## Run php-metrics.
+	$(PHPQA_RUN) phpmetrics --report-html=var/phpmetrics ./src
+.PHONY: qa-php-metrics
+
+qa-lint-yaml: ## Lint yaml files.
+	$(SYMFONY_LINT)yaml ./config
+.PHONY: qa-lint-yaml
+
+qa-lint-container: ## Lint container.
+	$(SYMFONY_LINT)container
+.PHONY: qa-lint-container
+
+qa-lint-schema: ## Lint Doctrine schema.
+	$(SYMFONY_CONSOLE) doctrine:schema:validate --skip-sync -vvv --no-interaction
+.PHONY: qa-lint-schema
+
+qa-audit: ## Run composer audit.
+	$(COMPOSER) audit
+.PHONY: qa-audit
+
+phpunit: ## Run PHPUnit
+	@$(PHP_CONT) ./vendor/bin/phpunit --testdox --colors=always tests
+
+qa-rector: ## Lint container.
+	$(PHPQA_RUN) rector process
+.PHONY: qa-lint-container
+
+## === ⭐  OTHERS =================================================
+before-commit: qa-cs-fixer qa-phpstan   qa-audit test ## Run before commit.
+.PHONY: before-commit
+
+make test: ## Run PHPUnit
+	@$(PHP_CONT)  php bin/console doctrine:database:create --env=test --if-not-exists
+	@$(PHP_CONT) ./vendor/bin/phpunit --testdox --colors=always tests
+
+
 
 ## —— 🐝 The Strangebuzz Symfony Makefile 🐝 ———————————————————————————————————
 
@@ -38,10 +90,10 @@ help: ## Outputs this help screen
 
 ## —— Composer 🧙‍♂️ ————————————————————————————————————————————————————————————
 install: ## Install vendors according to the current composer.lock file
-	$(DOCKER) exec  www_docker_symfony composer install --no-progress --prefer-dist --optimize-autoloader
-	
+	$(COMPOSER) install --no-progress --prefer-dist --optimize-autoloader
+
 update:## update composer
-	$(DOCKER) exec  www_docker_symfony composer update --dev --no-interaction -o
+	$(COMPOSER) update --dev --no-interaction -o
 
 ## —— PHP 🐘 (linux with sudo apt-get) —————————————————————————————————————————————————
 php-upgrade: ## Upgrade PHP to the last version
@@ -65,71 +117,53 @@ sf: ## List all Symfony commands
 	$(SYMFONY)
 
 cc: ## Clear the cache. DID YOU CLEAR YOUR CACHE????
-	$(SYMFONY) c:c
+	$(SYMFONY)  c:c
 
 warmup: ## Warmup the cache
-	$(SYMFONY) cache:warmup
+	$(SYMFONY)  cache:warmup
 
 fix-perms: ## Fix permissions of all var files
-	sudo chmod 777 ./var ./vendor ./php ./
+	sudo chmod 777 ./var ./vendor
 
 assets: purge ## Install the assets with symlinks in the public folder
-	$(SYMFONY) assets:install public/ --symlink --relative
+	$(SYMFONY)  assets:install public/ --symlink --relative
 
 purge: ## Purge cache and logs
 	rm -rf var/cache/* var/logs/*
 
 entity: ## create Entity (before using this command, connect on your container with make:bash)
-	$(SYMFONY) make:entity
+	$(SYMFONY)  make:entity
 
 migration: ## make migration (before using this command, connect on your container with make:bash)
-	$(SYMFONY) make:migration --no-interaction
+	$(SYMFONY)  make:migration --no-interaction
 
 migrate: ## doctrine migration migrate (before using this command, connect on your container with make:bash)
-	$(SYMFONY) doctrine:migration:migrate --no-interaction
+	$(SYMFONY)  doctrine:migration:migrate --no-interaction
 
 migrate-force: ## doctrine migration migrate (before using this command, connect on your container with make:bash)
-	$(SYMFONY) doctrine:schema:update --force
+	$(SYMFONY)  doctrine:schema:update --force
 
 crud : ## make crud (create reset delete)(before using this command, connect on your container with make:bash)
-	$(SYMFONY) make:crud 
+	$(SYMFONY)  make:crud
 
 controller : ## make controller (before using this command, connect on your container with make:bash)
-	$(SYMFONY) make:controller 
+	$(SYMFONY)  make:controller
 
 router : ## debugging App routing
-	$(SYMFONY) debug:router
+	$(SYMFONY)  debug:router
 
 dispatcher : ## see dispatcher event
-	$(SYMFONY) debug:event-dispatcher
-	
+	$(SYMFONY)  debug:event-dispatcher
+
 framework : ## see framework config
-	$(SYMFONY) debug:config framework 
-
-
-## —— Symfony binary 💻 ————————————————————————————————————————————————————————
-
-symfony-cli-linux: ## install symfony cli commands on linux
-	wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-
-symfony-cli-mac: ## install symfony cli commands on linux
- 	curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-
-cert-install: ## Install the local HTTPS certificates
-	$(SYMFONY_BIN) server:ca:install
-
-serve: ## Serve the application with HTTPS support (add "--no-tls" to disable https)
-	$(SYMFONY_BIN) serve --daemon --port=$(HTTP_PORT)
-
-unserve: ## Stop the webserver
-	$(SYMFONY_BIN) server:stop
+	$(SYMFONY)  debug:config framework
 
 ## —— Docker 🐳 ————————————————————————————————————————————————————————————————
 up: ## Start the docker hub (MySQL,phpMyadmin,php)
 	$(DOCKER_COMP) up -d
 
 docker-build: ## Builds the PHP image
-	$(DOCKER_COMP) build 
+	$(DOCKER_COMP) build
 
 down: ## Stop the docker hub
 	$(DOCKER_COMP) down --remove-orphans
@@ -141,9 +175,9 @@ restart:
 	$(DOCKER_COMP) restart $$(docker  -l -c )
 
 bash: ## Connect to the application container
-	$(DOCKER) exec -it  www_docker_symfony  bash
+	$(DOCKER) exec -it  site_e_commerce_symfony-php-1  bash
 
-kill-r-containers: ## Kill all running containers 
+kill-r-containers: ## Kill all running containers
 	$(DOCKER) kill $$(docker ps -q)
 
 delete-s-containers: ## Delete all stopped containers
@@ -158,36 +192,36 @@ stop-containers: ## Stop all containers
 ## —— Stripe 💳 ————————————————————————————————————————————————————————
 
 stripe : ## install stripe
-	$(DOCKER) exec  www_docker_symfony composer require stripe/stripe-php
+	$(COMPOSER) require stripe/stripe-php
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
 build : docker-build up  install update stripe   ## Build project, Install vendors according to the current composer.lock file, install symfony cli, Stripe
 
-start: load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
+start: up load-fixtures  ##load-fixtures  serve ## build project,Start docker, load fixtures and start the webserver
 
-reload: unserve restart load-fixtures serve ## Load fixtures 
+reload: stop restart load-fixturesdr	 ## Load fixtures
 
 stop: down  ## Stop docker and the Symfony binary server
 
 commands: ## Display all commands in the project namespace
-	$(SYMFONY) list $(PROJECT)
+	$(SYMFONY)  list site_e_commerce_symfony-php-1
 
 load-fixtures: ## Build the DB, control the schema validity, load fixtures and check the migration status
-	$(SYMFONY) --env=dev doctrine:cache:clear-metadata
-	$(SYMFONY) --env=dev doctrine:database:create --if-not-exists
-	$(SYMFONY) --env=dev doctrine:schema:drop --force
-	$(SYMFONY) --env=dev doctrine:schema:create
-	$(SYMFONY) --env=dev doctrine:schema:validate
-	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
+	$(SYMFONY)  --env=dev doctrine:cache:clear-metadata
+	$(SYMFONY)  --env=dev doctrine:database:create --if-not-exists
+	$(SYMFONY)  --env=dev doctrine:schema:drop --force
+	$(SYMFONY)  --env=dev doctrine:schema:create
+	$(SYMFONY)  --env=dev doctrine:schema:validate
+	$(SYMFONY)  --env=dev doctrine:fixtures:load --no-interaction
 
 rebuild-database: drop-db create-db migration migrate-force load-fixtures ## Drop database, create database, Doctrine migration migrate,reload fixtures
 
 create-db:## Create the database
-	$(SYMFONY)  --env=dev doctrine:database:create --if-not-exists --no-interaction
+	$(SYMFONY)   --env=dev doctrine:database:create --if-not-exists --no-interaction
 
 reload-fixtures:## reload just fixtures
-	$(SYMFONY) --env=dev doctrine:fixtures:load --no-interaction
+	$(SYMFONY)  --env=dev doctrine:fixtures:load --no-interaction
 
 drop-db:## Drop the  database (before using this command, connect on your container with make:bash)
-	$(SYMFONY)  doctrine:database:drop --force --no-interaction
+	$(SYMFONY)   doctrine:database:drop --force --no-interaction
 

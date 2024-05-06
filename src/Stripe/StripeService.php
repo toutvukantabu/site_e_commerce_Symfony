@@ -7,20 +7,14 @@ use App\Entity\Purchase;
 class StripeService
 
 {
-    protected $secretKey;
-    protected $publickey;
-
-    public function __construct(string $secretKey, string $publicKey)
+    public function __construct(protected string $secretKey, protected string $publicKey)
     {
-
-        $this->secretKey = $secretKey;
-        $this->publickey = $publicKey;
     }
 
     public function getPublicKey(): string
     {
 
-        return $this->publickey;
+        return $this->publicKey;
     }
 
     public function getPaymentIntent(Purchase $purchase)

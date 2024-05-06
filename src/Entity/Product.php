@@ -8,58 +8,40 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Table( name: '`product`')]
 class Product
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message= "Le nom du produit est obligatoire !")
-     * @Assert\Length(min=3,max=255, minMessage="Le nom du produit doit avoir 3 caractères minimum",maxMessage="le nom du produit dépasse 255 caractères")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Le nom du produit est obligatoire !')]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'Le nom du produit doit avoir 3 caractères minimum', maxMessage: 'le nom du produit dépasse 255 caractères')]
     private $name;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message = "le produit doit contenir un prix")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: 'le produit doit contenir un prix')]
     private $price;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     */
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private $category;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * Assert/url("mettez une url valide pour l'image")
-     * @Assert\NotBlank(message= "Le nom du produit est obligatoire !")
-     */
+    #[ORM\Column(type: 'string', length: 255)] // Assert/url("mettez une url valide pour l'image")
+    #[Assert\NotBlank(message: 'Le nom du produit est obligatoire !')]
     private $mainPicture;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message= "Le produit doit contenir une description")
-     * @Assert\Length(min=20, minMessage="la description doit faire 20 caractères minimum")
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Le produit doit contenir une description')]
+    #[Assert\Length(min: 20, minMessage: 'la description doit faire 20 caractères minimum')]
     private $shortDescription;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="product")
-     */
+    #[ORM\OneToMany(targetEntity: PurchaseItem::class, mappedBy: 'product')]
     private $purchaseItems;
 
     public function __construct()
@@ -164,11 +146,9 @@ class Product
 
     public function removePurchaseItem(PurchaseItem $purchaseItem): self
     {
-        if ($this->purchaseItems->removeElement($purchaseItem)) {
-            // set the owning side to null (unless already changed)
-            if ($purchaseItem->getProduct() === $this) {
-                $purchaseItem->setProduct(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->purchaseItems->removeElement($purchaseItem) && $purchaseItem->getProduct() === $this) {
+            $purchaseItem->setProduct(null);
         }
 
         return $this;

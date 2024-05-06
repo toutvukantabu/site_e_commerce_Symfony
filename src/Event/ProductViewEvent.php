@@ -6,11 +6,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ProductViewEvent extends Event{
 
-private $product;
-
-public function __construct(Product $product)
+public function __construct(private readonly \App\Entity\Product $product)
 {
-    $this->product = $product;
 }
 public function GetProduct() : Product
 {

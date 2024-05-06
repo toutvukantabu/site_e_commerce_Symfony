@@ -7,10 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController{
 
-/**
-  * @Route("/" , name="homepage")
-  */
-    public function homepage( ProductRepository $productRepository){
+#[Route(path: '/', name: 'homepage')]
+    public function homepage( ProductRepository $productRepository): \Symfony\Component\HttpFoundation\Response{
 $products = $productRepository->findBy([],[],3);
 
 

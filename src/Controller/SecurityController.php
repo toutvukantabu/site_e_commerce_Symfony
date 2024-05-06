@@ -10,9 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
-    /**
-     * @Route("/login", name="security_login")
-     */
+    #[Route(path: '/login', name: 'security_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -26,10 +24,8 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $email, 'error' => $error]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
-    public function logout()
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         return $this->redirectToRoute('security_login');
     }
