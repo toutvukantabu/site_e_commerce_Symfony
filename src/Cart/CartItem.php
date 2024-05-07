@@ -6,9 +6,8 @@ use App\Entity\Product;
 
 class CartItem
 {
-
     /**
-     * @var \App\Entity\Product
+     * @var Product
      */
     public $product;
     /**

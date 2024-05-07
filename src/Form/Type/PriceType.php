@@ -10,26 +10,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PriceType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['divide'] === false){
+        if (false === $options['divide']) {
             return;
         }
-        $builder->addModelTransformer(new CentimesTransformer);
+        $builder->addModelTransformer(new CentimesTransformer());
     }
 
     public function getParent()
     {
-
         return NumberType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-
-            'divide' => true
+            'divide' => true,
         ]);
     }
 }

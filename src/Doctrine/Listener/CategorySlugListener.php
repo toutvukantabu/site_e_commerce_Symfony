@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Doctrine\Listener;
 
@@ -6,24 +6,21 @@ use App\Entity\Category;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class CategorySlugListener{
-    
-    public function __construct(protected \Symfony\Component\String\Slugger\SluggerInterface $slugger)
+class CategorySlugListener
+{
+    public function __construct(protected SluggerInterface $slugger)
     {
     }
 
-    public function prePersist(Category $entity,LifecycleEventArgs $event)
+    public function prePersist(Category $entity, LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
-     
-        if(!$entity instanceof Category){
+
+        if (!$entity instanceof Category) {
             return;
         }
-        if($entity->getSlug() === null || $entity->getSlug() === '' || $entity->getSlug() === '0'){
-
+        if (null === $entity->getSlug() || '' === $entity->getSlug() || '0' === $entity->getSlug()) {
             $entity->setSlug(strtolower($this->slugger->slug($entity->getName())));
-
         }
-
     }
 }

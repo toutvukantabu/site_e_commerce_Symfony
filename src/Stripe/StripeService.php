@@ -5,7 +5,6 @@ namespace App\Stripe;
 use App\Entity\Purchase;
 
 class StripeService
-
 {
     public function __construct(protected string $secretKey, protected string $publicKey)
     {
@@ -13,7 +12,6 @@ class StripeService
 
     public function getPublicKey(): string
     {
-
         return $this->publicKey;
     }
 
@@ -23,7 +21,7 @@ class StripeService
 
         return \Stripe\PaymentIntent::create([
             'amount' => $purchase->getTotal(),
-            'currency' => 'eur'
+            'currency' => 'eur',
         ]);
     }
 }

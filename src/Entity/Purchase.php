@@ -3,11 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\PurchaseRepository;
-use DateTime;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -40,7 +38,7 @@ class Purchase
     private ?string $status = 'PENDING';
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
-    private ?\App\Entity\User $user = null;
+    private ?User $user = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $purchasedAt = null;
@@ -49,9 +47,7 @@ class Purchase
      * @var Collection<PurchaseItem>
      */
     #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseItem::class, orphanRemoval: true)]
-    private \Doctrine\Common\Collections\Collection $purchaseItems;
-
-
+    private Collection $purchaseItems;
 
     public function __construct()
     {
@@ -62,9 +58,10 @@ class Purchase
     public function prePersist()
     {
         if (empty($this->purchasedAt)) {
-            $this->purchasedAt = new DateTime();
+            $this->purchasedAt = new \DateTime();
         }
     }
+
     #[ORM\PreFlush]
     public function preFlush()
     {
@@ -73,10 +70,9 @@ class Purchase
         foreach ($this->purchaseItems as $item) {
             $total += $item->getTotal();
         }
-          $this->total = $total;
-         
+        $this->total = $total;
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;

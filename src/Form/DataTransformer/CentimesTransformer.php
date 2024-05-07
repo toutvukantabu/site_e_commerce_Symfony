@@ -1,22 +1,26 @@
-<?php 
+<?php
 
 namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-class CentimesTransformer implements DataTransformerInterface{
+class CentimesTransformer implements DataTransformerInterface
+{
     public function transform($value)
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
+
         return $value / 100;
     }
+
     public function reverseTransform($value)
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
+
         return $value * 100;
     }
 }

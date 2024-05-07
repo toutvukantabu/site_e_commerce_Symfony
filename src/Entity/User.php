@@ -30,18 +30,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING)]
     private ?string $password = null;
 
-
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Category>
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Category::class)]
-    private \Doctrine\Common\Collections\Collection $categories;
+    private Collection $categories;
 
     /**
      * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Purchase>
      */
     #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'user')]
-    private \Doctrine\Common\Collections\Collection $purchases;
+    private Collection $purchases;
 
     public function __construct()
     {
@@ -134,7 +133,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return 'test';
     }
-
 
     /**
      * @return Collection|Category[]

@@ -2,23 +2,18 @@
 
 namespace App\Controller\Purchase;
 
-
-use App\Entity\Purchase;
 use App\Cart\CartService;
-use App\Purchase\PurchasePersister;
+use App\Entity\Purchase;
 use App\Form\CartConfirmationType;
+use App\Purchase\PurchasePersister;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 
 class PurchaseConfirmationController extends AbstractController
 {
-
-
-    public function __construct(protected \App\Cart\CartService $cartService, protected \Doctrine\ORM\EntityManagerInterface $em, protected \App\Purchase\PurchasePersister $persister)
+    public function __construct(protected CartService $cartService, protected EntityManagerInterface $em, protected PurchasePersister $persister)
     {
     }
 
@@ -31,6 +26,7 @@ class PurchaseConfirmationController extends AbstractController
         $form->handleRequest($request);
         if (!$form->isSubmitted()) {
             $this->addFlash('warning', 'vous devez remplir le formulaire de confirmation');
+
             return $this->redirectToRoute('cart_show');
         }
 
@@ -38,20 +34,18 @@ class PurchaseConfirmationController extends AbstractController
 
         $cartItems = $this->cartService->getDetailCartItem();
 
-        if ($cartItems === []) {
-
+        if ([] === $cartItems) {
             $this->addFlash('warning', 'Vous ne pouvez pas valider une commande avec un panier vide');
 
             return $this->redirectToRoute('cart_show');
         }
-        /** @var Purchase  */
+        /** @var Purchase */
         $purchase = $form->getData();
 
         $this->persister->storePurchase($purchase);
 
         return $this->redirectToRoute('purchase_payement_form', [
-            'id' => $purchase->getId()
-
+            'id' => $purchase->getId(),
         ]);
     }
 }

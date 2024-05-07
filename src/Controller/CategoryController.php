@@ -6,13 +6,12 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 class CategoryController extends AbstractController
 {
@@ -31,10 +30,10 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[route(path: '/admin/category/create', name: 'category_create')]
+    #[Route(path: '/admin/category/create', name: 'category_create')]
     public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
     {
-        $category = new Category;
+        $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handlerequest($request);
 
@@ -43,38 +42,40 @@ class CategoryController extends AbstractController
             $category->setSlug(strtolower($slugger->slug($category->getName())));
             $em->persist($category);
             $em->flush();
+
             return $this->redirectToRoute('homepage');
         }
         $formView = $form->createView();
+
         return $this->render('category/create.html.twig', [
-            'formView' => $formView
+            'formView' => $formView,
         ]);
     }
-    #[route(path: '/admin/category/{id}/edit', name: 'category_edit')]
+
+    #[Route(path: '/admin/category/{id}/edit', name: 'category_edit')]
     public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em, SluggerInterface $slugger)
-    { 
-        
-       $category = $categoryRepository->find($id);
+    {
+        $category = $categoryRepository->find($id);
 
-             if (!$category) {
+        if (!$category) {
+            throw new NotFoundHttpException("Cette catégorie n'existe pas");
+        }
 
-           throw new NotFoundHttpException("Cette catégorie n'existe pas");
-             }
+        // $this->denyAccessUnlessGranted('CAN_EDIT', $category, "Vous n'êtes pas le popriétaire de cette catégorie");
 
-            // $this->denyAccessUnlessGranted('CAN_EDIT', $category, "Vous n'êtes pas le popriétaire de cette catégorie");
-    
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $category->setSlug(strtolower($slugger->slug($category->getName())));
             $em->flush();
+
             return $this->redirectToRoute('homepage');
         }
         $formView = $form->createView();
 
         return $this->render('category/edit.html.twig', [
             'category' => $category,
-            'formView' => $formView
+            'formView' => $formView,
         ]);
     }
 }

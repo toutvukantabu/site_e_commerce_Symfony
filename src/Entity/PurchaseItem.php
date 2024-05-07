@@ -15,11 +15,11 @@ class PurchaseItem
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'purchaseItems')]
-    private ?\App\Entity\Product $product = null;
+    private ?Product $product = null;
 
     #[ORM\ManyToOne(targetEntity: Purchase::class, inversedBy: 'purchaseItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?\App\Entity\Purchase $purchase = null;
+    private ?Purchase $purchase = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
     private ?string $productName = null;

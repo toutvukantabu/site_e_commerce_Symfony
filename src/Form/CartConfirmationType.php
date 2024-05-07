@@ -4,10 +4,10 @@ namespace App\Form;
 
 use App\Entity\Purchase;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CartConfirmationType extends AbstractType
 {
@@ -20,10 +20,9 @@ class CartConfirmationType extends AbstractType
             [
                 'label' => 'Nom complet',
                 'attr' => [
-                    
-                    'placeholder' => 'Nom complet pour la commande'
+                    'placeholder' => 'Nom complet pour la commande',
                 ],
-                'required' => true
+                'required' => true,
             ])
             ->add(
                 'adress',
@@ -31,9 +30,9 @@ class CartConfirmationType extends AbstractType
                 [
                     'label' => 'Adresse complete',
                     'attr' => [
-                        'placeholder' => 'Adresse complète'
+                        'placeholder' => 'Adresse complète',
                     ],
-                    'required' => true
+                    'required' => true,
                 ])
             ->add(
                 'postalCode',
@@ -41,30 +40,27 @@ class CartConfirmationType extends AbstractType
                 [
                     'label' => 'Code Postal',
                     'attr' => [
-                        'placeholder' => 'Code postal'
+                        'placeholder' => 'Code postal',
                     ],
-                    'required' => true
+                    'required' => true,
                 ])
-    
+
             ->add(
                 'city',
                 TextType::class,
                 [
                     'label' => 'ville',
                     'attr' => [
-                        'placeholder' => 'Ville'
+                        'placeholder' => 'Ville',
                     ],
-                    'required' => true
+                    'required' => true,
                 ]);
-    
-}
-        
-    
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-           'data_class'=> Purchase::class
+            'data_class' => Purchase::class,
         ]);
     }
 }

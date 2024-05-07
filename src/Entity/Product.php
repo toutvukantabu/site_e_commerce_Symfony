@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\Table( name: '`product`')]
+#[ORM\Table(name: '`product`')]
 class Product
 {
     #[ORM\Id]
@@ -30,7 +30,7 @@ class Product
     private ?string $slug = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    private ?\App\Entity\Category $category = null;
+    private ?Category $category = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)] // Assert/url("mettez une url valide pour l'image")
     #[Assert\NotBlank(message: 'Le nom du produit est obligatoire !')]
@@ -45,7 +45,7 @@ class Product
      * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\PurchaseItem>
      */
     #[ORM\OneToMany(targetEntity: PurchaseItem::class, mappedBy: 'product')]
-    private \Doctrine\Common\Collections\Collection $purchaseItems;
+    private Collection $purchaseItems;
 
     public function __construct()
     {

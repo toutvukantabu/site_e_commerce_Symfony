@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ORM\Table( name: '`category`')]
+#[ORM\Table(name: '`category`')]
 class Category
 {
     #[ORM\Id]
@@ -17,7 +17,6 @@ class Category
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
     private ?int $id = null;
 
-    
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
     #[Assert\NotBlank(message: 'Le nom de la catégorie est obligatoire !')]
     #[Assert\Length(min: 0, max: 255, minMessage: 'Le nom de la catégorie doit avoir 3 caractères minimum', maxMessage: 'le nom de la catégorie dépasse 255 caractères')]
@@ -30,10 +29,10 @@ class Category
      * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Product>
      */
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
-    private \Doctrine\Common\Collections\Collection $products;
+    private Collection $products;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
-    private ?\App\Entity\User $owner = null;
+    private ?User $owner = null;
 
     public function __construct()
     {

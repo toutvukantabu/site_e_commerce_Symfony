@@ -2,16 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Product;
 use App\Entity\Category;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductType extends AbstractType
 {
@@ -22,45 +22,43 @@ class ProductType extends AbstractType
                 'label' => 'Nom du produit',
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Taper le nom du produit'
+                    'placeholder' => 'Taper le nom du produit',
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'description courte',
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Tapez une desciption assez courte mais parlante pour le visiteur'
+                    'placeholder' => 'Tapez une desciption assez courte mais parlante pour le visiteur',
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('price', MoneyType::class, [
                 'label' => 'prix du produit',
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'taper le prix du produit en euro '
+                    'placeholder' => 'taper le prix du produit en euro ',
                 ],
-                'divisor'=> 100,
-                'required' => false
-
+                'divisor' => 100,
+                'required' => false,
             ])
             ->add('mainPicture', UrlType::class, [
                 'label' => 'image du produit',
                 'attr' => [
-
-                    'placeholder' => 'taper une uURL d\'image '
-                ]
+                    'placeholder' => 'taper une uURL d\'image ',
+                ],
             ])->add('category', EntityType::class, [
                 'label' => 'catégorie',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'placeholder' => '--choisir une categorie--',
                 'class' => Category::class,
-                'choice_label' => fn(Category $category) => strtoupper((string) $category->getName())
+                'choice_label' => fn (Category $category) => strtoupper((string) $category->getName()),
             ]);
 
-         /* Second test */
+        /* Second test */
 
         // $builder->get('price')->addModelTransformer(new CentimesTransformer);
 
@@ -74,7 +72,6 @@ class ProductType extends AbstractType
         //        $product->setPrice($product->getPrice() * 100 );
         //    }
         //     });
-
 
         // $builder->addEventListener(FormEvents::PRE_SET_DATA, function( FormEvent $event){
 
@@ -101,7 +98,6 @@ class ProductType extends AbstractType
                } */
 
         // });
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -2,24 +2,23 @@
 
 namespace App\EventDispatcher;
 
-use Psr\Log\LoggerInterface;
 use App\Event\ProductViewEvent;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\MailerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class productViewSuccessSubscriber implements EventSubscriberInterface
 {
-    public function __construct(protected \Psr\Log\LoggerInterface $logger, protected \Symfony\Component\Mailer\MailerInterface $mailer)
+    public function __construct(protected LoggerInterface $logger, protected MailerInterface $mailer)
     {
     }
 
     public static function getSubscribedEvents()
     {
-
         return [
-            'productView.Success' => 'sendSuccesProductView'
+            'productView.Success' => 'sendSuccesProductView',
         ];
     }
 
@@ -32,6 +31,6 @@ class productViewSuccessSubscriber implements EventSubscriberInterface
         //     ->subject("visite du produit n°" . $productViewEvent->GetProduct()->getId());
         // $this->mailer->send($email);
 
-        $this->logger->info("vous venez de voir le produit n°");
+        $this->logger->info('vous venez de voir le produit n°');
     }
 }
