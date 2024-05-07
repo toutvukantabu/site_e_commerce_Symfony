@@ -11,27 +11,27 @@ class PurchaseItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'purchaseItems')]
-    private $product;
+    private ?\App\Entity\Product $product = null;
 
     #[ORM\ManyToOne(targetEntity: Purchase::class, inversedBy: 'purchaseItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private $purchase;
+    private ?\App\Entity\Purchase $purchase = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $productName;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $productName = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $productPrice;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $productPrice = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $quantity;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $quantity = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $total;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $total = null;
 
     public function getId(): ?int
     {

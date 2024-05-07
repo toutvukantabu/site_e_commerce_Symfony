@@ -14,23 +14,26 @@ class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
     #[Assert\NotBlank(message: 'Le nom de la catégorie est obligatoire !')]
     #[Assert\Length(min: 0, max: 255, minMessage: 'Le nom de la catégorie doit avoir 3 caractères minimum', maxMessage: 'le nom de la catégorie dépasse 255 caractères')]
-    private $name;
+    private ?string $name = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $slug;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $slug = null;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Product>
+     */
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
-    private $products;
+    private \Doctrine\Common\Collections\Collection $products;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
-    private $owner;
+    private ?\App\Entity\User $owner = null;
 
     public function __construct()
     {

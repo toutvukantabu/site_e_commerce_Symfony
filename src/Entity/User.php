@@ -15,27 +15,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 180, unique: true)]
+    private ?string $email = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::JSON)]
     private $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(type: 'string')]
-    private $password;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING)]
+    private ?string $password = null;
 
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Category>
+     */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Category::class)]
-    private $categories;
+    private \Doctrine\Common\Collections\Collection $categories;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Purchase>
+     */
     #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'user')]
-    private $purchases;
+    private \Doctrine\Common\Collections\Collection $purchases;
 
     public function __construct()
     {

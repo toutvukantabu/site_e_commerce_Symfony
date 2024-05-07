@@ -18,38 +18,38 @@ class Purchase
     public const STATUS_PAID = 'PAID';
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $fullname;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $fullname = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $adress;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $adress = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $postalCode;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $postalCode = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $city;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $city = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $total;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $total = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $status = 'PENDING';
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $status = 'PENDING';
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
-    private $user;
+    private ?\App\Entity\User $user = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private $purchasedAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $purchasedAt = null;
 
     /**
      * @var Collection<PurchaseItem>
      */
     #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseItem::class, orphanRemoval: true)]
-    private $purchaseItems;
+    private \Doctrine\Common\Collections\Collection $purchaseItems;
 
 
 
