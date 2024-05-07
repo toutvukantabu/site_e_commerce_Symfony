@@ -50,3 +50,9 @@ to see the list of commands in terminal
 ## Maildev access
 
 -> http://localhost:8082
+
+## connect to postgres database
+
+* login: shop    
+* password: shop
+* address: localhost:5433

@@ -47,6 +47,10 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data:rw
       - ./docker/db/data:/var/lib/postgresql/data:rw
+    ports:
+      - target: 5432
+        published: ${POSTGRES_PORT:-5433}
+        protocol: tcp
 
 ###< doctrine/doctrine-bundle ###
 volumes:
