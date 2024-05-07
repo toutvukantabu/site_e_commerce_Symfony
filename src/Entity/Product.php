@@ -14,35 +14,38 @@ class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
     #[Assert\NotBlank(message: 'Le nom du produit est obligatoire !')]
     #[Assert\Length(min: 3, max: 255, minMessage: 'Le nom du produit doit avoir 3 caractères minimum', maxMessage: 'le nom du produit dépasse 255 caractères')]
-    private $name;
+    private ?string $name = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
     #[Assert\NotBlank(message: 'le produit doit contenir un prix')]
-    private $price;
+    private ?int $price = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $slug;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $slug = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    private $category;
+    private ?\App\Entity\Category $category = null;
 
-    #[ORM\Column(type: 'string', length: 255)] // Assert/url("mettez une url valide pour l'image")
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)] // Assert/url("mettez une url valide pour l'image")
     #[Assert\NotBlank(message: 'Le nom du produit est obligatoire !')]
-    private $mainPicture;
+    private ?string $mainPicture = null;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT)]
     #[Assert\NotBlank(message: 'Le produit doit contenir une description')]
     #[Assert\Length(min: 20, minMessage: 'la description doit faire 20 caractères minimum')]
-    private $shortDescription;
+    private ?string $shortDescription = null;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\PurchaseItem>
+     */
     #[ORM\OneToMany(targetEntity: PurchaseItem::class, mappedBy: 'product')]
-    private $purchaseItems;
+    private \Doctrine\Common\Collections\Collection $purchaseItems;
 
     public function __construct()
     {

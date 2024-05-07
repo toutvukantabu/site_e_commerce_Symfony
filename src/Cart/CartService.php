@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CartService
 {
 
-    public function __construct(private RequestStack $requestStack, protected \App\Repository\ProductRepository $productRepository)
+    public function __construct(private readonly RequestStack $requestStack, protected \App\Repository\ProductRepository $productRepository)
     {
     }
 
