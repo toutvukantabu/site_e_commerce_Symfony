@@ -27,7 +27,6 @@ class PurchaseSuccessEmailSubscriber implements EventSubscriberInterface
 
     public function sendSuccessEmail(PurchaseSuccessEvent $purchaseSuccessEvent): void
     {
-        $purchaseSuccessEvent->getPurchase()->getUser();
         $purchase = $purchaseSuccessEvent->getPurchase();
         $email = new TemplatedEmail();
         $email->to(new Address($purchaseSuccessEvent->getPurchase()->getUser()->getEmail(),$purchaseSuccessEvent->getPurchase()->getUser()->getFullName()))
