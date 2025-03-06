@@ -1,58 +1,78 @@
-#  e-commerce Website
+# E-commerce Website Documentation
 
+## Prerequisites
 
-## prerequisite: 
+Ensure you have the following installed on your machine:
 
--> docker and docker-compose installed on your machine, if there is a conflict with your version, you can change it at the version = "" line in the docker-compose.yml file 
+- **Docker** and **Docker Compose**. If there is a conflict with your version, you can modify it in the `version` field of the `docker-compose.yml` file.
 
-. Install docker -> https://docs.docker.com/get-docker/
+  - Install Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)
+  - Install Docker Compose: [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
 
-. Install docker-compose -> https://docs.docker.com/compose/install/
+- **Stripe API Keys** (if you plan to test Stripe payments). Add your API keys to the `.env` file:
+  
+  - Get your API keys: [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
 
-If you want testing stripe payments, add on .env files your API keys access
+---
 
- -> https://dashboard.stripe.com/test/apikeys
+## Project Startup
 
-## Project start  
+After cloning the repository, open a terminal at the root of the project (`~/site_e_commerce_Symfony`) and follow these steps:
 
-* after cloning , open the terminal at the root of the project (~/site_e_commerce_Symfony) : 
-
-First :
-
-``` 
+### Step 1: Start the Project
+```sh
 make start
-``` 
-
-Second open command on www_symfony_docker container (tap "exit" if you want return on basic terminal): 
-
-``` 
-make sh
 ```
 
-## Project access : 
+### Step 2: Access the Symfony Container
+To enter the Symfony container (`www_symfony_docker`), run:
+```sh
+make sh
+```
+To return to the basic terminal, type:
+```sh
+exit
+```
 
--> https://localhost:444
+---
 
-If you need help, see "MAKEFILE" or type
+## Project Access
 
-``` 
-make help
-``` 
-to see the list of commands in terminal 
+- **Frontend Access:** [https://localhost:444](https://localhost:444)
+- If you need assistance, check the `MAKEFILE` or run:
+  ```sh
+  make help
+  ```
+  to view the list of available commands.
 
+---
 
-## Administration panel access
+## Administration Panel
 
-* Login: admin@gmail.com 
+- **Login:** `admin@gmail.com`
+- **Password:** `password`
 
-* password: password
+---
 
-## Maildev access
+## MailDev Access (Email Testing)
 
--> http://localhost:8082
+- **URL:** [http://localhost:8082](http://localhost:8082)
 
-## connect to postgres database
+---
 
-* login: shop    
-* password: shop
-* address: localhost:5433
+## PostgreSQL Database Connection
+
+- **Login:** `shop`
+- **Password:** `shop`
+- **Host:** `localhost`
+- **Port:** `5433`
+
+---
+
+## Additional Notes
+
+- Ensure that Docker and all necessary services are running before accessing the project.
+- For any troubleshooting, refer to the `MAKEFILE` for useful commands.
+
+Happy coding! 🚀
+
